@@ -19,6 +19,48 @@ const scrollRef = ref(null);
 const packetLog = ref([]);
 const inspectorMode = ref('visual');
 
+// ================== DATA UPDATE HANDLER ==================
+/**
+ * Handle two-way data binding updates from components
+ */
+const handleDataUpdate = ({ path, value, surfaceId }) => {
+  if (!path || !surfaceId || !surfaces[surfaceId]) return;
+
+  // JSON Pointer: path starts with '/'
+  if (!path.startsWith('/')) {
+    console.warn('[A2UI] Invalid path format, must start with /:', path);
+    return;
+  }
+
+  const tokens = path.slice(1).split('/').map(token =>
+    token.replace(/~1/g, '/').replace(/~0/g, '~')
+  );
+
+  // Navigate to parent and set value
+  let current = surfaces[surfaceId].data;
+  for (let i = 0; i < tokens.length - 1; i++) {
+    const token = tokens[i];
+    if (!(token in current)) {
+      current[token] = {};
+    }
+    current = current[token];
+  }
+
+  const lastToken = tokens[tokens.length - 1];
+  current[lastToken] = value;
+
+  console.log(`[A2UI] Data updated: ${path} = ${value}`);
+};
+
+// ================== ACTION HANDLER ==================
+/**
+ * Handle actions from components (buttons, etc.)
+ */
+const handleAction = (action) => {
+  console.log('[A2UI] Action triggered:', action);
+  // In a real app, this would send the action to the agent
+};
+
 // --- Token Processing ---
 const processToken = (chunk) => {
   const timestamp = new Date().toISOString().split('T')[1].slice(0, -1);
@@ -53,6 +95,31 @@ const processToken = (chunk) => {
   });
 };
 
+/**
+ * Extract value from A2UI value types (spec-compliant)
+ */
+const extractValue = (item) => {
+  if ('valueString' in item) return item.valueString;
+  if ('valueNumber' in item) return item.valueNumber;
+  if ('valueInt' in item) return item.valueInt; // Legacy support
+  if ('valueBool' in item) return item.valueBool;
+  if ('valueNull' in item) return null;
+
+  if ('valueList' in item) {
+    return item.valueList.map(extractValue);
+  }
+
+  if ('valueMap' in item) {
+    const obj = {};
+    item.valueMap.forEach(entry => {
+      obj[entry.key] = extractValue(entry);
+    });
+    return obj;
+  }
+
+  return undefined;
+};
+
 const handleJsonFragment = (fragment) => {
   jsonBuffer.value += fragment;
 
@@ -64,8 +131,25 @@ const handleJsonFragment = (fragment) => {
       if (!line.trim()) return;
       try {
         const msg = JSON.parse(line);
+
+        // Validate message structure (A2UI spec compliance)
+        const messageType = Object.keys(msg)[0];
+        const validTypes = ['surfaceUpdate', 'dataModelUpdate', 'beginRendering', 'deleteSurface'];
+
+        if (!validTypes.includes(messageType)) {
+          console.error(`[A2UI] Invalid message type: ${messageType}`);
+          return;
+        }
+
+        if (!msg[messageType]?.surfaceId) {
+          console.error(`[A2UI] Missing surfaceId in ${messageType}`);
+          return;
+        }
+
         dispatchMessage(msg);
-      } catch (e) { /* Buffer wait */ }
+      } catch (e) {
+        console.error("[A2UI] Parse error:", e, "Line:", line);
+      }
     });
   }
 };
@@ -83,12 +167,16 @@ const dispatchMessage = (msg) => {
   if (type === 'surfaceUpdate') {
     payload.components.forEach(c => s.components[c.id] = c.component);
   } else if (type === 'dataModelUpdate') {
+    // Spec-compliant value extraction
     payload.contents.forEach(item => {
-      s.data[item.key] = item.valueString || item.valueInt || item.valueList || item.valueMap;
+      const val = extractValue(item);
+      s.data[item.key] = val;
     });
   } else if (type === 'beginRendering') {
     s.root = payload.root;
     s.isLive = true;
+  } else if (type === 'deleteSurface') {
+    delete surfaces[surfaceId];
   }
 };
 
@@ -234,7 +322,8 @@ const formatPacket = (txt) => {
 
                     <div v-else-if="surfaces[name]?.isLive" class="animate-enter h-full">
                       <A2UISurface :componentId="surfaces[name].root" :components="surfaces[name].components"
-                        :data="surfaces[name].data" />
+                        :data="surfaces[name].data" :surfaceId="name" @action="handleAction"
+                        @dataUpdate="handleDataUpdate" />
                     </div>
 
                   </div>
@@ -268,7 +357,7 @@ const formatPacket = (txt) => {
         }">
           <div class="flex justify-between opacity-50 mb-0.5">
             <span class="font-bold" :class="pkt.mode === 'TEXT' ? 'text-blue-400' : 'text-green-400'">{{ pkt.mode
-              }}</span>
+            }}</span>
             <span>{{ pkt.timestamp }}</span>
           </div>
           <div v-if="inspectorMode === 'visual'" class="text-gray-300 break-all leading-tight"
