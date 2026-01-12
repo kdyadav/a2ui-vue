@@ -1,0 +1,116 @@
+:root {
+  /* Design Tokens */
+  --a2-bg: #ffffff;
+  --a2-surface: #f8fafc;
+  --a2-border: #e2e8f0;
+  --a2-primary: #3b82f6;
+  --a2-text-main: #1e293b;
+  --a2-text-muted: #64748b;
+  --a2-radius: 12px;
+  --a2-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+}
+
+/* Layout Containers */
+.a2-column {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 100%;
+}
+.a2-row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.a2-card {
+  background: var(--a2-bg);
+  border: 1px solid var(--a2-border);
+  border-radius: var(--a2-radius);
+  padding: 20px;
+  shadow: var(--a2-shadow);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.a2-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+}
+
+/* Typography */
+.a2-text-h1 {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--a2-text-main);
+  letter-spacing: -0.025em;
+}
+.a2-text-body {
+  font-size: 1rem;
+  color: var(--a2-text-main);
+  line-height: 1.5;
+}
+.a2-text-caption {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--a2-text-muted);
+  letter-spacing: 0.05em;
+}
+
+/* Data Visualization */
+.a2-metric {
+  flex: 1;
+  min-width: 120px;
+  padding: 16px;
+  background: linear-gradient(135deg, #f0f9ff 0%, #ffffff 100%);
+  border: 1px solid #e0f2fe;
+  border-radius: var(--a2-radius);
+}
+.a2-chart-container {
+  width: 100%;
+  padding-top: 12px;
+}
+.a2-chart-bar-wrapper {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  height: 100px;
+  border-bottom: 2px solid var(--a2-surface);
+}
+.a2-chart-bar {
+  flex: 1;
+  background: var(--a2-primary);
+  border-radius: 4px 4px 0 0;
+  transition: height 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Interactive Elements */
+.a2-button {
+  background: var(--a2-primary);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.2s;
+}
+.a2-button:hover {
+  filter: brightness(1.1);
+}
+.a2-button:active {
+  transform: scale(0.98);
+}
+
+.a2-input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--a2-border);
+  border-radius: 8px;
+  outline: none;
+}
+.a2-input:focus {
+  border-color: var(--a2-primary);
+  ring: 2px solid #bfdbfe;
+}
