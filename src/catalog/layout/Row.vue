@@ -66,10 +66,9 @@ const classes = computed(() => ({
   flex-direction: row;
   flex: var(--weight);
   width: 100%;
-  min-height: 100%;
+  min-height: 0;
   box-sizing: border-box;
   gap: 0.75rem;
-  flex-wrap: wrap;
 }
 
 /* Alignment (cross-axis) */

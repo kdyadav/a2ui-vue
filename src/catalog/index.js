@@ -29,6 +29,7 @@ export const DEFAULT_CATALOG = {
   Checkbox: defineAsyncComponent(() => import('./input/Checkbox.vue')), // Alias
   Slider: defineAsyncComponent(() => import('./input/Slider.vue')),
   MultipleChoice: defineAsyncComponent(() => import('./input/MultipleChoice.vue')),
+  Select: defineAsyncComponent(() => import('./input/Select.vue')),
   DateTimeInput: defineAsyncComponent(() => import('./input/DateTimeInput.vue')),
 
   // Media components

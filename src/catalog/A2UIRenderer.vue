@@ -18,28 +18,28 @@ const componentDef = computed(() => {
 // Determine the component type
 const componentType = computed(() => {
   if (!componentDef.value) return null;
-  
+
   // Check for known component type keys
   const knownTypes = [
     'Row', 'Column', 'List', 'Card',
     'Text', 'Icon', 'Divider',
-    'TextField', 'TextInput', 'CheckBox', 'Checkbox', 'Slider', 'MultipleChoice', 'DateTimeInput',
+    'TextField', 'TextInput', 'CheckBox', 'Checkbox', 'Slider', 'MultipleChoice', 'Select', 'DateTimeInput',
     'Image', 'Video', 'AudioPlayer',
     'Button', 'Tabs', 'Modal',
     'Metric', 'Chart'
   ];
-  
+
   for (const type of knownTypes) {
     if (componentDef.value[type]) {
       return type;
     }
   }
-  
+
   // Fallback: check for 'type' property
   if (componentDef.value.type) {
     return componentDef.value.type;
   }
-  
+
   return null;
 });
 
@@ -62,18 +62,9 @@ const handleDataUpdate = (event) => emit('dataUpdate', event);
 </script>
 
 <template>
-  <component
-    v-if="resolvedComponent && componentDef"
-    :is="resolvedComponent"
-    :componentId="componentId"
-    :component="componentDef"
-    :components="components"
-    :data="data"
-    :surfaceId="surfaceId"
-    :weight="componentWeight"
-    @action="handleAction"
-    @dataUpdate="handleDataUpdate"
-  />
+  <component v-if="resolvedComponent && componentDef" :is="resolvedComponent" :componentId="componentId"
+    :component="componentDef" :components="components" :data="data" :surfaceId="surfaceId" :weight="componentWeight"
+    @action="handleAction" @dataUpdate="handleDataUpdate" />
   <div v-else-if="componentId && !componentDef" class="a2ui-renderer-error">
     Component not found: {{ componentId }}
   </div>
@@ -92,4 +83,3 @@ const handleDataUpdate = (event) => emit('dataUpdate', event);
   font-size: 0.75rem;
 }
 </style>
-

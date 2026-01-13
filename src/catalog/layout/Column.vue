@@ -65,8 +65,8 @@ const classes = computed(() => ({
   display: flex;
   flex-direction: column;
   flex: var(--weight);
-  min-width: 100%;
-  height: 100%;
+  min-width: 0;
+  min-height: 0;
   box-sizing: border-box;
   gap: 1rem;
 }

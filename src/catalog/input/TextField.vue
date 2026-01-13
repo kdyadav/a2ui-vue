@@ -34,8 +34,9 @@ const inputType = computed(() => {
 });
 const isLongText = computed(() => textFieldType.value === 'longText');
 
-// Get the binding path (supports both 'text' and 'binding' properties)
+// Get the binding path (supports 'fieldPath', 'text.path', and 'binding' properties)
 const bindingPath = computed(() => {
+  if (fieldProps.value.fieldPath) return fieldProps.value.fieldPath;
   const textVal = fieldProps.value.text;
   if (textVal?.path) return textVal.path;
   return fieldProps.value.binding || null;

@@ -12,14 +12,15 @@ const emit = defineEmits(A2UI_COMPONENT_EMITS);
 const { weight, resolve, getUniqueId, setData } = useA2UIComponent(props, emit);
 
 // Extract Checkbox properties
-const checkboxProps = computed(() => 
+const checkboxProps = computed(() =>
   props.component?.CheckBox || props.component?.Checkbox || props.component || {}
 );
 
 const label = computed(() => resolve(checkboxProps.value.label) || '');
 
-// Get the binding path
+// Get the binding path (supports 'fieldPath', 'value.path', and 'binding' properties)
 const bindingPath = computed(() => {
+  if (checkboxProps.value.fieldPath) return checkboxProps.value.fieldPath;
   const valueVal = checkboxProps.value.value;
   if (valueVal?.path) return valueVal.path;
   return checkboxProps.value.binding || null;
@@ -42,14 +43,8 @@ const handleChange = (event) => {
 
 <template>
   <section class="a2ui-checkbox" :style="{ '--weight': weight }">
-    <input
-      type="checkbox"
-      autocomplete="off"
-      class="a2ui-checkbox__input"
-      :id="inputId"
-      :checked="isChecked"
-      @change="handleChange"
-    />
+    <input type="checkbox" autocomplete="off" class="a2ui-checkbox__input" :id="inputId" :checked="isChecked"
+      @change="handleChange" />
     <label :for="inputId" class="a2ui-checkbox__label">
       {{ label }}
     </label>
@@ -88,4 +83,3 @@ const handleChange = (event) => {
   user-select: none;
 }
 </style>
-
