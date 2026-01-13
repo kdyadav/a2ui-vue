@@ -8,6 +8,7 @@ import { ref, reactive } from 'vue';
 function extractValue(item) {
   if ('valueString' in item) return item.valueString;
   if ('valueNumber' in item) return item.valueNumber;
+  if ('valueInt' in item) return item.valueInt;
   if ('valueBool' in item) return item.valueBool;
   if ('valueNull' in item) return null;
 

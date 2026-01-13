@@ -12,13 +12,21 @@ const A2UIRenderer = defineAsyncComponent(() => import('../A2UIRenderer.vue'));
 const props = defineProps(A2UI_COMPONENT_PROPS);
 const emit = defineEmits(A2UI_COMPONENT_EMITS);
 
-const { weight, sendAction } = useA2UIComponent(props, emit);
+const { weight, sendAction, resolve } = useA2UIComponent(props, emit);
 
 // Extract Button properties
 const buttonProps = computed(() => props.component?.Button || props.component || {});
 const action = computed(() => buttonProps.value.action || null);
 const ariaLabel = computed(() => buttonProps.value.ariaLabel || '');
 const child = computed(() => buttonProps.value.child || null);
+
+// Support for non-spec 'label' property as fallback for convenience
+// Spec uses 'child' to reference a Text component, but 'label' is more convenient for inline text
+const label = computed(() => {
+  const labelVal = buttonProps.value.label;
+  if (!labelVal) return null;
+  return resolve(labelVal);
+});
 
 const handleClick = () => {
   if (action.value) {
@@ -29,8 +37,11 @@ const handleClick = () => {
 
 <template>
   <button class="a2ui-button" :style="{ '--weight': weight }" :aria-label="ariaLabel" @click="handleClick">
+    <!-- Spec-compliant: render child component -->
     <A2UIRenderer v-if="child" :componentId="child" :components="components" :data="data" :surfaceId="surfaceId"
       @action="emit('action', $event)" @dataUpdate="emit('dataUpdate', $event)" />
+    <!-- Convenience fallback: render label directly -->
+    <span v-else-if="label">{{ label }}</span>
     <slot v-else />
   </button>
 </template>

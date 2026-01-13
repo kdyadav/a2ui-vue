@@ -14,6 +14,7 @@ const { weight, resolve, getUniqueId, setData } = useA2UIComponent(props, emit);
 // Extract DateTimeInput properties
 const dtProps = computed(() => props.component?.DateTimeInput || props.component || {});
 
+const label = computed(() => resolve(dtProps.value.label) || '');
 const enableDate = computed(() => dtProps.value.enableDate ?? true);
 const enableTime = computed(() => dtProps.value.enableTime ?? true);
 
@@ -49,22 +50,28 @@ const handleInput = (event) => {
 
 <template>
   <section class="a2ui-datetime" :style="{ '--weight': weight }">
-    <input
-      autocomplete="off"
-      class="a2ui-datetime__input"
-      :id="inputId"
-      :type="inputType"
-      :value="currentValue"
-      @input="handleInput"
-    />
+    <label v-if="label" :for="inputId" class="a2ui-datetime__label">
+      {{ label }}
+    </label>
+    <input autocomplete="off" class="a2ui-datetime__input" :id="inputId" :type="inputType" :value="currentValue"
+      @input="handleInput" />
   </section>
 </template>
 
 <style scoped>
 .a2ui-datetime {
   display: flex;
+  flex-direction: column;
   flex: var(--weight);
   width: 100%;
+}
+
+.a2ui-datetime__label {
+  display: block;
+  margin-bottom: 0.25rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #374151;
 }
 
 .a2ui-datetime__input {
@@ -83,4 +90,3 @@ const handleInput = (event) => {
   border-color: #3b82f6;
 }
 </style>
-

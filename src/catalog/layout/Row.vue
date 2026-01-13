@@ -12,17 +12,30 @@ const A2UIRenderer = defineAsyncComponent(() => import('../A2UIRenderer.vue'));
 const props = defineProps(A2UI_COMPONENT_PROPS);
 const emit = defineEmits(A2UI_COMPONENT_EMITS);
 
-const { weight } = useA2UIComponent(props, emit);
+const { weight, resolve } = useA2UIComponent(props, emit);
 
 // Extract Row properties
 const rowProps = computed(() => props.component?.Row || props.component || {});
 const alignment = computed(() => rowProps.value.alignment || 'stretch');
 const distribution = computed(() => rowProps.value.distribution || 'start');
-const children = computed(() => {
-  const childrenDef = rowProps.value.children;
-  if (!childrenDef) return [];
-  if (childrenDef.explicitList) return childrenDef.explicitList;
+
+// Resolve children - supports both explicitList and template
+const childrenDef = computed(() => rowProps.value.children);
+const isTemplated = computed(() => !!childrenDef.value?.template);
+
+// Static children from explicitList
+const staticChildren = computed(() => {
+  if (!childrenDef.value) return [];
+  if (childrenDef.value.explicitList) return childrenDef.value.explicitList;
   return [];
+});
+
+// Dynamic children from template
+const templateConfig = computed(() => childrenDef.value?.template || null);
+const templateItems = computed(() => {
+  if (!templateConfig.value?.dataBinding) return [];
+  const data = resolve({ path: templateConfig.value.dataBinding });
+  return Array.isArray(data) ? data : [];
 });
 
 // Dynamic classes for alignment and distribution
@@ -35,8 +48,15 @@ const classes = computed(() => ({
 
 <template>
   <section :class="classes" :style="{ '--weight': weight }">
-    <A2UIRenderer v-for="childId in children" :key="childId" :componentId="childId" :components="components"
-      :data="data" :surfaceId="surfaceId" @action="emit('action', $event)" @dataUpdate="emit('dataUpdate', $event)" />
+    <!-- Static children from explicitList -->
+    <A2UIRenderer v-if="!isTemplated" v-for="childId in staticChildren" :key="childId" :componentId="childId"
+      :components="components" :data="data" :surfaceId="surfaceId" @action="emit('action', $event)"
+      @dataUpdate="emit('dataUpdate', $event)" />
+
+    <!-- Dynamic children from template -->
+    <A2UIRenderer v-if="isTemplated && templateConfig" v-for="(item, index) in templateItems" :key="`template-${index}`"
+      :componentId="templateConfig.componentId" :components="components" :data="{ ...data, $item: item, $index: index }"
+      :surfaceId="surfaceId" @action="emit('action', $event)" @dataUpdate="emit('dataUpdate', $event)" />
   </section>
 </template>
 

@@ -12,13 +12,27 @@ const emit = defineEmits(A2UI_COMPONENT_EMITS);
 const { weight, resolve, getUniqueId, setData } = useA2UIComponent(props, emit);
 
 // Extract TextField properties
-const fieldProps = computed(() => 
+const fieldProps = computed(() =>
   props.component?.TextField || props.component?.TextInput || props.component || {}
 );
 
 const label = computed(() => resolve(fieldProps.value.label) || '');
 const placeholder = computed(() => resolve(fieldProps.value.placeholder) || 'Please enter a value');
-const inputType = computed(() => fieldProps.value.type === 'number' ? 'number' : 'text');
+
+// Map A2UI spec textFieldType to HTML input types
+// Spec types: date, longText, number, shortText, obscured
+const textFieldType = computed(() => fieldProps.value.textFieldType || fieldProps.value.type || 'shortText');
+const inputType = computed(() => {
+  switch (textFieldType.value) {
+    case 'date': return 'date';
+    case 'number': return 'number';
+    case 'obscured': return 'password';
+    case 'longText': return 'text'; // Will use textarea
+    case 'shortText':
+    default: return 'text';
+  }
+});
+const isLongText = computed(() => textFieldType.value === 'longText');
 
 // Get the binding path (supports both 'text' and 'binding' properties)
 const bindingPath = computed(() => {
@@ -43,19 +57,16 @@ const handleInput = (event) => {
 </script>
 
 <template>
-  <section class="a2ui-textfield" :style="{ '--weight': weight }">
+  <section class="a2ui-textfield" :class="{ 'a2ui-textfield--long': isLongText }" :style="{ '--weight': weight }">
     <label v-if="label" :for="inputId" class="a2ui-textfield__label">
       {{ label }}
     </label>
-    <input
-      autocomplete="off"
-      class="a2ui-textfield__input"
-      :id="inputId"
-      :type="inputType"
-      :value="inputValue"
-      :placeholder="placeholder"
-      @input="handleInput"
-    />
+    <!-- Use textarea for longText type -->
+    <textarea v-if="isLongText" autocomplete="off" class="a2ui-textfield__input a2ui-textfield__textarea" :id="inputId"
+      :value="inputValue" :placeholder="placeholder" @input="handleInput" rows="4" />
+    <!-- Use input for other types -->
+    <input v-else autocomplete="off" class="a2ui-textfield__input" :id="inputId" :type="inputType" :value="inputValue"
+      :placeholder="placeholder" @input="handleInput" />
   </section>
 </template>
 
@@ -96,5 +107,15 @@ const handleInput = (event) => {
 .a2ui-textfield__input::placeholder {
   color: #9ca3af;
 }
-</style>
 
+.a2ui-textfield__textarea {
+  resize: vertical;
+  min-height: 6rem;
+  font-family: inherit;
+  line-height: 1.5;
+}
+
+.a2ui-textfield--long {
+  flex: 1;
+}
+</style>
