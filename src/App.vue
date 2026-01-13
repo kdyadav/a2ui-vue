@@ -5,6 +5,7 @@ import A2UISurface from './A2UISurface.vue';
 // ================== 1. PARSER ENGINE ==================
 const MODE = { TEXT: 'TEXT', JSON: 'JSON' };
 const DELIMITER = '---a2ui_JSON---';
+const DELIMITER_TEXT = '---a2ui_TEXT---';
 
 // State
 const currentMode = ref(MODE.TEXT);
@@ -70,7 +71,7 @@ const processToken = (chunk) => {
     content: chunk,
     mode: currentMode.value,
     timestamp,
-    isDelimiter: chunk.includes(DELIMITER)
+    isDelimiter: chunk.includes(DELIMITER) || chunk.includes(DELIMITER_TEXT)
   });
 
   if (currentMode.value === MODE.TEXT) {
@@ -86,7 +87,16 @@ const processToken = (chunk) => {
       if (parts[1]) handleJsonFragment(parts[1]);
     }
   } else {
-    handleJsonFragment(chunk);
+    // JSON mode - check for switch back to TEXT
+    if (chunk.includes(DELIMITER_TEXT)) {
+      const parts = chunk.split(DELIMITER_TEXT);
+      if (parts[0]) handleJsonFragment(parts[0]);
+
+      currentMode.value = MODE.TEXT;
+      textBuffer.value = parts[1] || '';
+    } else {
+      handleJsonFragment(chunk);
+    }
   }
 
   nextTick(() => {
@@ -210,35 +220,87 @@ const runSimulation = async () => {
     // 1. LIGHTS (Living Room)
     '{"surfaceUpdate": {"surfaceId": "lights", "components": [{"id": "root", "component": {"Card": {"child": "col"}}}, {"id": "col", "component": {"Column": {"children": {"explicitList": ["h-row", "l1", "l2"]}}}}, {"id": "h-row", "component": {"Row": {"children": {"explicitList": ["icon", "title"]}}}}, {"id": "icon", "component": {"Icon": {"name": "lightbulb"}}}, {"id": "title", "component": {"Text": {"text": {"literalString": "Lighting"}, "usageHint": "caption"}}}, {"id": "l1", "component": {"Checkbox": {"label": "Living Room (Dim)", "binding": "/l1"}}}, {"id": "l2", "component": {"Checkbox": {"label": "Kitchen (Bright)", "binding": "/l2"}}}]}}\n',
 
+    // Render Lights Surface
+    '{"beginRendering": {"surfaceId": "lights", "root": "root"}}\n',
+
     // 2. SECURITY (Front Door)
     '{"surfaceUpdate": {"surfaceId": "security", "components": [{"id": "s-root", "component": {"Card": {"child": "s-col"}}}, {"id": "s-col", "component": {"Column": {"children": {"explicitList": ["s-head", "cam-feed"]}}}}, {"id": "s-head", "component": {"Row": {"children": {"explicitList": ["s-icon", "s-txt"]}}}}, {"id": "s-icon", "component": {"Icon": {"name": "videocam"}}}, {"id": "s-txt", "component": {"Text": {"text": {"literalString": "Front Gate"}, "usageHint": "caption"}}}, {"id": "cam-feed", "component": {"Metric": {"label": "Status", "value": {"literalString": "Motion Detected"}, "trend": "down"}}}]}}\n',
+
+    // Render Security Surface
+    '{"beginRendering": {"surfaceId": "security", "root": "s-root"}}\n',
+
+    // Update Security with additional details
+    '{"surfaceUpdate": {"surfaceId": "security", "components": [{"id": "cam-feed", "component": {"Metric": {"label": "Status", "value": {"literalString": "Motion Detected - 2 people"}, "trend": "down"}}}]}}\n',
 
     // 3. WEATHER (Metric)
     '{"surfaceUpdate": {"surfaceId": "weather", "components": [{"id": "w-root", "component": {"Card": {"child": "w-col"}}}, {"id": "w-col", "component": {"Column": {"children": {"explicitList": ["w-icon", "w-val"]}}}}, {"id": "w-icon", "component": {"Icon": {"name": "cloud"}}}, {"id": "w-val", "component": {"Metric": {"label": "Seattle, WA", "value": {"literalString": "12°C"}, "trend": "neutral"}}}]}}\n',
 
+    // Render Weather Surface
+    '{"beginRendering": {"surfaceId": "weather", "root": "w-root"}}\n',
+
+    // Update Weather with precipitation info
+    '{"surfaceUpdate": {"surfaceId": "weather", "components": [{"id": "w-val", "component": {"Metric": {"label": "Seattle, WA - Light Rain", "value": {"literalString": "12°C"}, "trend": "down"}}}]}}\n',
+
     // 4. REMINDERS (List)
     '{"surfaceUpdate": {"surfaceId": "tasks", "components": [{"id": "t-root", "component": {"Card": {"child": "t-list"}}}, {"id": "t-list", "component": {"Column": {"children": {"explicitList": ["t-head", "task1", "task2"]}}}}, {"id": "t-head", "component": {"Text": {"text": {"literalString": "To-Do List"}, "usageHint": "caption"}}}, {"id": "task1", "component": {"Checkbox": {"label": "Buy Milk"}}}, {"id": "task2", "component": {"Checkbox": {"label": "Call Mom"}}}]}}\n',
+
+    // Render Tasks Surface
+    '{"beginRendering": {"surfaceId": "tasks", "root": "t-root"}}\n',
+
+    // Update Tasks with a third item
+    '{"surfaceUpdate": {"surfaceId": "tasks", "components": [{"id": "t-list", "component": {"Column": {"children": {"explicitList": ["t-head", "task1", "task2", "task3"]}}}}, {"id": "task3", "component": {"Checkbox": {"label": "Team Meeting at 2 PM"}}}]}}\n',
 
     // 5. MUSIC (Player)
     '{"surfaceUpdate": {"surfaceId": "music", "components": [{"id": "m-root", "component": {"Card": {"child": "m-col"}}}, {"id": "m-col", "component": {"Column": {"children": {"explicitList": ["m-head", "m-track", "m-ctrl"]}}}}, {"id": "m-head", "component": {"Row": {"children": {"explicitList": ["m-icon", "m-src"]}}}}, {"id": "m-icon", "component": {"Icon": {"name": "music_note"}}}, {"id": "m-src", "component": {"Text": {"text": {"literalString": "Spotify"}, "usageHint": "caption"}}}, {"id": "m-track", "component": {"Text": {"text": {"literalString": "Morning Jazz Mix"}, "usageHint": "h1"}}}, {"id": "m-ctrl", "component": {"Button": {"child": "play-txt", "action": {"name": "play"}}}}, {"id": "play-txt", "component": {"Text": {"text": {"literalString": "▶ Play"}}}}]}}\n',
 
+    // Render Music Surface
+    '{"beginRendering": {"surfaceId": "music", "root": "m-root"}}\n',
+
+    // Update Music with current track info
+    '{"surfaceUpdate": {"surfaceId": "music", "components": [{"id": "m-track", "component": {"Text": {"text": {"literalString": "Morning Jazz Mix - 24 tracks"}, "usageHint": "h1"}}}]}}\n',
+
     // 6. HEALTH (Chart)
     '{"surfaceUpdate": {"surfaceId": "health", "components": [{"id": "h-root", "component": {"Card": {"child": "h-col"}}}, {"id": "h-col", "component": {"Column": {"children": {"explicitList": ["h-title", "h-chart"]}}}}, {"id": "h-title", "component": {"Text": {"text": {"literalString": "Sleep Quality"}, "usageHint": "caption"}}}, {"id": "h-chart", "component": {"Chart": {"type": "bar", "dataBinding": "/sleep"}}}]}}\n',
-
-    // --- PHASE 3: DATA & RENDERING (Staggered) ---
-
-    // Render Surfaces 1 & 2
-    '{"beginRendering": {"surfaceId": "lights", "root": "root"}}\n',
-    '{"beginRendering": {"surfaceId": "security", "root": "s-root"}}\n',
 
     // Data for Surface 6 (Health)
     '{"dataModelUpdate": {"surfaceId": "health", "contents": [{"key": "sleep", "valueList": [{"valueMap": [{"key": "item", "valueString": "M"}, {"key": "val", "valueInt": 70}]}, {"valueMap": [{"key": "item", "valueString": "T"}, {"key": "val", "valueInt": 85}]}, {"valueMap": [{"key": "item", "valueString": "W"}, {"key": "val", "valueInt": 60}]}, {"valueMap": [{"key": "item", "valueString": "T"}, {"key": "val", "valueInt": 90}]}]}]}}\n',
 
-    // Render remaining surfaces in quick succession
-    '{"beginRendering": {"surfaceId": "weather", "root": "w-root"}}\n',
-    '{"beginRendering": {"surfaceId": "tasks", "root": "t-root"}}\n',
-    '{"beginRendering": {"surfaceId": "music", "root": "m-root"}}\n',
-    '{"beginRendering": {"surfaceId": "health", "root": "h-root"}}\n'
+    // Render Health Surface
+    '{"beginRendering": {"surfaceId": "health", "root": "h-root"}}\n',
+
+    // Update Health with additional data point
+    '{"dataModelUpdate": {"surfaceId": "health", "contents": [{"key": "sleep", "valueList": [{"valueMap": [{"key": "item", "valueString": "M"}, {"key": "val", "valueInt": 70}]}, {"valueMap": [{"key": "item", "valueString": "T"}, {"key": "val", "valueInt": 85}]}, {"valueMap": [{"key": "item", "valueString": "W"}, {"key": "val", "valueInt": 60}]}, {"valueMap": [{"key": "item", "valueString": "T"}, {"key": "val", "valueInt": 90}]}, {"valueMap": [{"key": "item", "valueString": "F"}, {"key": "val", "valueInt": 75}]}]}]}}\n',
+
+    // --- PHASE 3: FINAL UPDATES TO ALL SURFACES ---
+
+    // Final update to Lights - add bedroom light
+    '{"surfaceUpdate": {"surfaceId": "lights", "components": [{"id": "col", "component": {"Column": {"children": {"explicitList": ["h-row", "l1", "l2", "l3"]}}}}, {"id": "l3", "component": {"Checkbox": {"label": "Bedroom (Off)", "binding": "/l3"}}}]}}\n',
+
+    // Final update to Security - status change
+    '{"surfaceUpdate": {"surfaceId": "security", "components": [{"id": "cam-feed", "component": {"Metric": {"label": "Status", "value": {"literalString": "All Clear"}, "trend": "up"}}}]}}\n',
+
+    // Final update to Weather - add wind info
+    '{"surfaceUpdate": {"surfaceId": "weather", "components": [{"id": "w-col", "component": {"Column": {"children": {"explicitList": ["w-icon", "w-val", "w-wind"]}}}}, {"id": "w-wind", "component": {"Text": {"text": {"literalString": "Wind: 15 km/h NW"}}}}]}}\n',
+
+    // Final update to Tasks - mark first task complete
+    '{"dataModelUpdate": {"surfaceId": "tasks", "contents": [{"key": "task1_done", "valueBool": true}]}}\n',
+
+    // Final update to Music - add volume control
+    '{"surfaceUpdate": {"surfaceId": "music", "components": [{"id": "m-col", "component": {"Column": {"children": {"explicitList": ["m-head", "m-track", "m-ctrl", "m-vol"]}}}}, {"id": "m-vol", "component": {"Text": {"text": {"literalString": "Volume: 65%"}}}}]}}\n',
+
+    // Final update to Health - update title with average
+    '{"surfaceUpdate": {"surfaceId": "health", "components": [{"id": "h-title", "component": {"Text": {"text": {"literalString": "Sleep Quality - Avg: 76%"}, "usageHint": "caption"}}}]}}\n',
+
+    // --- PHASE 4: CLOSING TEXT ---
+    // Switch back to TEXT mode with delimiter
+    "---a2ui_TEXT---",
+    "\n\nAll systems are **operational** and your dashboard is now fully loaded. ",
+    "I've synchronized all 6 widgets with real-time data from your smart home devices.\n\n",
+    "Your **energy consumption** is 15% lower than yesterday, and I've optimized the thermostat ",
+    "settings based on today's weather forecast. The **security system** is armed and all entry points ",
+    "are secure.\n\n",
+    "Would you like me to start your **morning playlist** or adjust any of the lighting scenes? ",
+    "I'm here to help make your day more comfortable and productive."
   ].join("");
 
   // CHAOS STREAMER
@@ -357,7 +419,7 @@ const formatPacket = (txt) => {
         }">
           <div class="flex justify-between opacity-50 mb-0.5">
             <span class="font-bold" :class="pkt.mode === 'TEXT' ? 'text-blue-400' : 'text-green-400'">{{ pkt.mode
-            }}</span>
+              }}</span>
             <span>{{ pkt.timestamp }}</span>
           </div>
           <div v-if="inspectorMode === 'visual'" class="text-gray-300 break-all leading-tight"
