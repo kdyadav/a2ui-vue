@@ -1,5 +1,5 @@
 <script setup>
-import { ref, reactive, nextTick } from 'vue';
+import { ref, reactive } from 'vue';
 import A2UISurface from './A2UISurface.vue';
 
 // ================== 1. PARSER ENGINE ==================
@@ -15,10 +15,6 @@ const jsonBuffer = ref('');
 const surfaces = reactive({});
 const isStreaming = ref(false);
 const scrollRef = ref(null);
-
-// Inspector State
-const packetLog = ref([]);
-const inspectorMode = ref('visual');
 
 // ================== DATA UPDATE HANDLER ==================
 /**
@@ -64,16 +60,6 @@ const handleAction = (action) => {
 
 // --- Token Processing ---
 const processToken = (chunk) => {
-  const timestamp = new Date().toISOString().split('T')[1].slice(0, -1);
-
-  packetLog.value.push({
-    id: Date.now() + Math.random(),
-    content: chunk,
-    mode: currentMode.value,
-    timestamp,
-    isDelimiter: chunk.includes(DELIMITER) || chunk.includes(DELIMITER_TEXT)
-  });
-
   if (currentMode.value === MODE.TEXT) {
     textBuffer.value += chunk;
 
@@ -98,11 +84,6 @@ const processToken = (chunk) => {
       handleJsonFragment(chunk);
     }
   }
-
-  nextTick(() => {
-    const list = document.getElementById('inspector-list');
-    if (list) list.scrollTop = list.scrollHeight;
-  });
 };
 
 /**
@@ -200,7 +181,6 @@ const runSimulation = async () => {
   textBuffer.value = '';
   jsonBuffer.value = '';
   currentMode.value = MODE.TEXT;
-  packetLog.value = [];
   Object.keys(surfaces).forEach(k => delete surfaces[k]);
 
   // THE MEGA STREAM
@@ -316,14 +296,6 @@ const runSimulation = async () => {
   }
   isStreaming.value = false;
 };
-
-// Formatting Helper
-const formatPacket = (txt) => {
-  return txt
-    .replace(/"(.*?)"/g, '<span class="text-green-400">"$1"</span>')
-    .replace(/({|}|\[|\])/g, '<span class="text-yellow-500">$1</span>')
-    .replace(/(surfaceUpdate|dataModelUpdate|beginRendering)/g, '<span class="text-blue-400 font-bold">$1</span>');
-};
 </script>
 
 <template>
@@ -399,41 +371,6 @@ const formatPacket = (txt) => {
       </div>
     </div>
 
-    <div class="w-80 bg-[#1E1E1E] border-l border-[#333] flex flex-col shadow-2xl z-20">
-      <div class="h-14 border-b border-[#333] flex items-center justify-between px-4 bg-[#252526]">
-        <div class="flex items-center gap-2">
-          <span class="material-icons text-gray-400 text-sm">code</span>
-          <span class="text-xs font-bold text-gray-300 uppercase tracking-wider">Inspector</span>
-        </div>
-        <button @click="inspectorMode = inspectorMode === 'visual' ? 'raw' : 'visual'"
-          class="text-[10px] text-blue-400 hover:text-blue-300">
-          {{ inspectorMode === 'visual' ? 'VISUAL' : 'RAW' }}
-        </button>
-      </div>
-
-      <div id="inspector-list" class="flex-1 overflow-y-auto p-3 space-y-1 font-mono text-[10px]">
-        <div v-for="pkt in packetLog" :key="pkt.id" class="rounded border-l-2 pl-2 py-1 transition-all" :class="{
-          'border-blue-500 hover:bg-[#2a2a2d]': pkt.mode === 'TEXT',
-          'border-green-500 hover:bg-[#202b24]': pkt.mode === 'JSON' && !pkt.isDelimiter,
-          'border-purple-500 bg-[#2d2236]': pkt.isDelimiter
-        }">
-          <div class="flex justify-between opacity-50 mb-0.5">
-            <span class="font-bold" :class="pkt.mode === 'TEXT' ? 'text-blue-400' : 'text-green-400'">{{ pkt.mode
-              }}</span>
-            <span>{{ pkt.timestamp }}</span>
-          </div>
-          <div v-if="inspectorMode === 'visual'" class="text-gray-300 break-all leading-tight"
-            v-html="formatPacket(pkt.content)"></div>
-          <div v-else class="text-gray-500 break-all">{{ JSON.stringify(pkt.content) }}</div>
-        </div>
-      </div>
-
-      <div class="p-2 border-t border-[#333] bg-[#252526] text-[10px] text-gray-500 flex justify-between">
-        <span>Packets: {{ packetLog.length }}</span>
-        <span>Surfaces: {{ Object.keys(surfaces).length }}</span>
-      </div>
-    </div>
-
   </div>
 </template>
 
@@ -455,14 +392,5 @@ const formatPacket = (txt) => {
     opacity: 1;
     transform: scale(1) translateY(0);
   }
-}
-
-#inspector-list::-webkit-scrollbar {
-  width: 6px;
-}
-
-#inspector-list::-webkit-scrollbar-thumb {
-  background: #444;
-  border-radius: 3px;
 }
 </style>
