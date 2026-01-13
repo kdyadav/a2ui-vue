@@ -31,6 +31,11 @@ const streamConfigs = {
     name: '🚦 Status Board',
     description: 'Live system status monitoring',
     surfaceId: 'status'
+  },
+  taskManager: {
+    name: '✅ Task Manager',
+    description: 'Comprehensive task management app with forms, lists, charts, and data binding',
+    surfaceId: 'taskmanager'
   }
 };
 
@@ -237,6 +242,223 @@ const productMessages = [
   }
 ];
 
+// Comprehensive Task Manager example - demonstrates all component types
+const taskManagerMessages = [
+  // Step 1: Initial skeleton with loading state
+  {
+    surfaceUpdate: {
+      surfaceId: 'taskmanager', components: [
+        { id: 'root', component: { Column: { children: { explicitList: ['app-header', 'loading-indicator'] } } } },
+        { id: 'app-header', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['logo-section', 'user-section'] } } } },
+        { id: 'logo-section', component: { Row: { alignment: 'center', children: { explicitList: ['app-icon', 'app-title'] } } } },
+        { id: 'app-icon', component: { Icon: { name: 'task_alt' } } },
+        { id: 'app-title', component: { Text: { text: { literalString: 'Task Manager Pro' }, usageHint: 'h1' } } },
+        { id: 'user-section', component: { Row: { alignment: 'center', children: { explicitList: ['user-avatar', 'user-name'] } } } },
+        { id: 'user-avatar', component: { Icon: { name: 'account_circle' } } },
+        { id: 'user-name', component: { Text: { text: { path: '/currentUser' }, usageHint: 'body' } } },
+        { id: 'loading-indicator', component: { Text: { text: { literalString: '⏳ Loading your workspace...' }, usageHint: 'caption' } } }
+      ]
+    }
+  },
+  // Step 2: Begin rendering to show the initial structure
+  { beginRendering: { surfaceId: 'taskmanager', root: 'root' } },
+  // Step 3: Set initial data model values
+  {
+    dataModelUpdate: {
+      surfaceId: 'taskmanager', contents: [
+        { key: 'currentUser', valueString: 'John Doe' },
+        { key: 'projectName', valueString: 'Q1 Product Launch' },
+        { key: 'totalTasks', valueInt: 24 },
+        { key: 'completedTasks', valueInt: 18 },
+        { key: 'inProgressTasks', valueInt: 4 },
+        { key: 'pendingTasks', valueInt: 2 }
+      ]
+    }
+  },
+  // Step 4: Add the main dashboard layout with metrics cards
+  {
+    surfaceUpdate: {
+      surfaceId: 'taskmanager', components: [
+        { id: 'root', component: { Column: { children: { explicitList: ['app-header', 'divider-main', 'project-header', 'metrics-section', 'content-area'] } } } },
+        { id: 'divider-main', component: { Divider: {} } },
+        { id: 'project-header', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['project-info', 'project-actions'] } } } },
+        { id: 'project-info', component: { Column: { children: { explicitList: ['project-label', 'project-name-display'] } } } },
+        { id: 'project-label', component: { Text: { text: { literalString: 'Current Project' }, usageHint: 'caption' } } },
+        { id: 'project-name-display', component: { Text: { text: { path: '/projectName' }, usageHint: 'h2' } } },
+        { id: 'project-actions', component: { Row: { children: { explicitList: ['btn-add-task', 'btn-settings'] } } } },
+        { id: 'btn-add-task', component: { Button: { label: '+ Add Task', action: { name: 'addTask' }, variant: 'primary' } } },
+        { id: 'btn-settings', component: { Button: { label: '⚙️', action: { name: 'openSettings' }, variant: 'secondary' } } },
+        { id: 'metrics-section', component: { Row: { distribution: 'spaceAround', children: { explicitList: ['metric-total', 'metric-completed', 'metric-progress', 'metric-pending'] } } } },
+        { id: 'metric-total', component: { Metric: { label: 'Total Tasks', value: { path: '/totalTasks' } } } },
+        { id: 'metric-completed', component: { Metric: { label: 'Completed', value: { path: '/completedTasks' }, trend: 12.5 } } },
+        { id: 'metric-progress', component: { Metric: { label: 'In Progress', value: { path: '/inProgressTasks' } } } },
+        { id: 'metric-pending', component: { Metric: { label: 'Pending', value: { path: '/pendingTasks' }, trend: -8.3 } } },
+        { id: 'content-area', component: { Row: { children: { explicitList: ['task-list-section', 'details-panel'] } } } }
+      ]
+    }
+  },
+  // Step 5: Add the task list section with filter controls
+  {
+    surfaceUpdate: {
+      surfaceId: 'taskmanager', components: [
+        { id: 'task-list-section', component: { Card: { child: 'task-list-content' } } },
+        { id: 'task-list-content', component: { Column: { children: { explicitList: ['task-list-header', 'task-filters', 'task-divider', 'task-items'] } } } },
+        { id: 'task-list-header', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['task-list-title', 'task-search'] } } } },
+        { id: 'task-list-title', component: { Text: { text: { literalString: '📋 Task List' }, usageHint: 'h3' } } },
+        { id: 'task-search', component: { TextInput: { fieldPath: '/searchQuery', placeholder: 'Search tasks...', variant: 'outlined' } } },
+        { id: 'task-filters', component: { Row: { children: { explicitList: ['filter-all', 'filter-active', 'filter-completed'] } } } },
+        { id: 'filter-all', component: { Button: { label: 'All', action: { name: 'filterTasks', params: { filter: 'all' } }, variant: 'primary' } } },
+        { id: 'filter-active', component: { Button: { label: 'Active', action: { name: 'filterTasks', params: { filter: 'active' } }, variant: 'secondary' } } },
+        { id: 'filter-completed', component: { Button: { label: 'Done', action: { name: 'filterTasks', params: { filter: 'done' } }, variant: 'secondary' } } },
+        { id: 'task-divider', component: { Divider: {} } },
+        { id: 'task-items', component: { Column: { children: { explicitList: [] } } } }
+      ]
+    }
+  },
+  // Step 6: Populate task list with individual task items
+  {
+    surfaceUpdate: {
+      surfaceId: 'taskmanager', components: [
+        { id: 'task-items', component: { Column: { children: { explicitList: ['task-1', 'task-2', 'task-3', 'task-4'] } } } },
+        // Task 1 - Completed
+        { id: 'task-1', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['task-1-left', 'task-1-right'] } } } },
+        { id: 'task-1-left', component: { Row: { alignment: 'center', children: { explicitList: ['task-1-check', 'task-1-info'] } } } },
+        { id: 'task-1-check', component: { Checkbox: { fieldPath: '/tasks/1/completed', label: '' } } },
+        { id: 'task-1-info', component: { Column: { children: { explicitList: ['task-1-title', 'task-1-meta'] } } } },
+        { id: 'task-1-title', component: { Text: { text: { literalString: 'Design homepage mockups' }, usageHint: 'body' } } },
+        { id: 'task-1-meta', component: { Text: { text: { literalString: '✅ Completed • Due: Jan 5' }, usageHint: 'caption' } } },
+        { id: 'task-1-right', component: { Row: { children: { explicitList: ['task-1-priority', 'task-1-menu'] } } } },
+        { id: 'task-1-priority', component: { Text: { text: { literalString: '🟢' }, usageHint: 'body' } } },
+        { id: 'task-1-menu', component: { Button: { label: '⋮', action: { name: 'taskMenu', params: { taskId: 1 } }, variant: 'secondary' } } },
+        // Task 2 - In Progress
+        { id: 'task-2', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['task-2-left', 'task-2-right'] } } } },
+        { id: 'task-2-left', component: { Row: { alignment: 'center', children: { explicitList: ['task-2-check', 'task-2-info'] } } } },
+        { id: 'task-2-check', component: { Checkbox: { fieldPath: '/tasks/2/completed', label: '' } } },
+        { id: 'task-2-info', component: { Column: { children: { explicitList: ['task-2-title', 'task-2-meta'] } } } },
+        { id: 'task-2-title', component: { Text: { text: { literalString: 'Implement user authentication' }, usageHint: 'body' } } },
+        { id: 'task-2-meta', component: { Text: { text: { literalString: '🔄 In Progress • Due: Jan 10' }, usageHint: 'caption' } } },
+        { id: 'task-2-right', component: { Row: { children: { explicitList: ['task-2-priority', 'task-2-menu'] } } } },
+        { id: 'task-2-priority', component: { Text: { text: { literalString: '🔴' }, usageHint: 'body' } } },
+        { id: 'task-2-menu', component: { Button: { label: '⋮', action: { name: 'taskMenu', params: { taskId: 2 } }, variant: 'secondary' } } }
+      ]
+    }
+  },
+  // Step 7: Add more tasks and update data model
+  {
+    surfaceUpdate: {
+      surfaceId: 'taskmanager', components: [
+        // Task 3 - In Progress
+        { id: 'task-3', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['task-3-left', 'task-3-right'] } } } },
+        { id: 'task-3-left', component: { Row: { alignment: 'center', children: { explicitList: ['task-3-check', 'task-3-info'] } } } },
+        { id: 'task-3-check', component: { Checkbox: { fieldPath: '/tasks/3/completed', label: '' } } },
+        { id: 'task-3-info', component: { Column: { children: { explicitList: ['task-3-title', 'task-3-meta'] } } } },
+        { id: 'task-3-title', component: { Text: { text: { literalString: 'API integration with payment gateway' }, usageHint: 'body' } } },
+        { id: 'task-3-meta', component: { Text: { text: { literalString: '🔄 In Progress • Due: Jan 12' }, usageHint: 'caption' } } },
+        { id: 'task-3-right', component: { Row: { children: { explicitList: ['task-3-priority', 'task-3-menu'] } } } },
+        { id: 'task-3-priority', component: { Text: { text: { literalString: '🟡' }, usageHint: 'body' } } },
+        { id: 'task-3-menu', component: { Button: { label: '⋮', action: { name: 'taskMenu', params: { taskId: 3 } }, variant: 'secondary' } } },
+        // Task 4 - Pending
+        { id: 'task-4', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['task-4-left', 'task-4-right'] } } } },
+        { id: 'task-4-left', component: { Row: { alignment: 'center', children: { explicitList: ['task-4-check', 'task-4-info'] } } } },
+        { id: 'task-4-check', component: { Checkbox: { fieldPath: '/tasks/4/completed', label: '' } } },
+        { id: 'task-4-info', component: { Column: { children: { explicitList: ['task-4-title', 'task-4-meta'] } } } },
+        { id: 'task-4-title', component: { Text: { text: { literalString: 'Write unit tests for checkout flow' }, usageHint: 'body' } } },
+        { id: 'task-4-meta', component: { Text: { text: { literalString: '⏳ Pending • Due: Jan 15' }, usageHint: 'caption' } } },
+        { id: 'task-4-right', component: { Row: { children: { explicitList: ['task-4-priority', 'task-4-menu'] } } } },
+        { id: 'task-4-priority', component: { Text: { text: { literalString: '🟡' }, usageHint: 'body' } } },
+        { id: 'task-4-menu', component: { Button: { label: '⋮', action: { name: 'taskMenu', params: { taskId: 4 } }, variant: 'secondary' } } }
+      ]
+    }
+  },
+  // Step 8: Set task completion states in data model
+  {
+    dataModelUpdate: {
+      surfaceId: 'taskmanager', contents: [
+        { key: 'tasks/1/completed', valueBool: true },
+        { key: 'tasks/2/completed', valueBool: false },
+        { key: 'tasks/3/completed', valueBool: false },
+        { key: 'tasks/4/completed', valueBool: false },
+        { key: 'searchQuery', valueString: '' }
+      ]
+    }
+  },
+  // Step 9: Add the details panel with task details form
+  {
+    surfaceUpdate: {
+      surfaceId: 'taskmanager', components: [
+        { id: 'details-panel', component: { Card: { child: 'details-content' } } },
+        { id: 'details-content', component: { Column: { children: { explicitList: ['details-header', 'details-divider', 'details-form', 'details-actions'] } } } },
+        { id: 'details-header', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['details-title', 'details-close'] } } } },
+        { id: 'details-title', component: { Text: { text: { literalString: '📝 Task Details' }, usageHint: 'h3' } } },
+        { id: 'details-close', component: { Button: { label: '✕', action: { name: 'closeDetails' }, variant: 'secondary' } } },
+        { id: 'details-divider', component: { Divider: {} } },
+        { id: 'details-form', component: { Column: { children: { explicitList: ['form-title', 'form-description', 'form-row-1', 'form-row-2'] } } } },
+        { id: 'form-title', component: { TextInput: { fieldPath: '/selectedTask/title', label: 'Task Title', placeholder: 'Enter task title...' } } },
+        { id: 'form-description', component: { TextInput: { fieldPath: '/selectedTask/description', label: 'Description', placeholder: 'Add a description...' } } },
+        { id: 'form-row-1', component: { Row: { children: { explicitList: ['form-priority', 'form-status'] } } } },
+        { id: 'form-priority', component: { Select: { fieldPath: '/selectedTask/priority', label: 'Priority', options: [{ value: 'low', label: '🟢 Low' }, { value: 'medium', label: '🟡 Medium' }, { value: 'high', label: '🔴 High' }] } } },
+        { id: 'form-status', component: { Select: { fieldPath: '/selectedTask/status', label: 'Status', options: [{ value: 'pending', label: '⏳ Pending' }, { value: 'inprogress', label: '🔄 In Progress' }, { value: 'completed', label: '✅ Completed' }] } } },
+        { id: 'form-row-2', component: { Row: { children: { explicitList: ['form-duedate', 'form-assignee'] } } } },
+        { id: 'form-duedate', component: { TextInput: { fieldPath: '/selectedTask/dueDate', label: 'Due Date', placeholder: 'YYYY-MM-DD' } } },
+        { id: 'form-assignee', component: { TextInput: { fieldPath: '/selectedTask/assignee', label: 'Assignee', placeholder: 'Enter assignee name...' } } },
+        { id: 'details-actions', component: { Row: { distribution: 'spaceEvenly', children: { explicitList: ['btn-save', 'btn-delete'] } } } },
+        { id: 'btn-save', component: { Button: { label: '💾 Save Changes', action: { name: 'saveTask' }, variant: 'primary' } } },
+        { id: 'btn-delete', component: { Button: { label: '🗑️ Delete', action: { name: 'deleteTask' }, variant: 'secondary' } } }
+      ]
+    }
+  },
+  // Step 10: Populate selected task data
+  {
+    dataModelUpdate: {
+      surfaceId: 'taskmanager', contents: [
+        { key: 'selectedTask/title', valueString: 'Implement user authentication' },
+        { key: 'selectedTask/description', valueString: 'Add OAuth2 login with Google and GitHub providers. Include session management and token refresh logic.' },
+        { key: 'selectedTask/priority', valueString: 'high' },
+        { key: 'selectedTask/status', valueString: 'inprogress' },
+        { key: 'selectedTask/dueDate', valueString: '2024-01-10' },
+        { key: 'selectedTask/assignee', valueString: 'Jane Smith' }
+      ]
+    }
+  },
+  // Step 11: Add activity log and progress chart
+  {
+    surfaceUpdate: {
+      surfaceId: 'taskmanager', components: [
+        { id: 'root', component: { Column: { children: { explicitList: ['app-header', 'divider-main', 'project-header', 'metrics-section', 'content-area', 'bottom-section'] } } } },
+        { id: 'bottom-section', component: { Row: { children: { explicitList: ['activity-card', 'chart-card'] } } } },
+        { id: 'activity-card', component: { Card: { child: 'activity-content' } } },
+        { id: 'activity-content', component: { Column: { children: { explicitList: ['activity-title', 'activity-divider', 'activity-list'] } } } },
+        { id: 'activity-title', component: { Text: { text: { literalString: '📜 Recent Activity' }, usageHint: 'h3' } } },
+        { id: 'activity-divider', component: { Divider: {} } },
+        { id: 'activity-list', component: { Column: { children: { explicitList: ['act-1', 'act-2', 'act-3'] } } } },
+        { id: 'act-1', component: { Text: { text: { literalString: '• Jane completed "Design homepage mockups" - 2h ago' }, usageHint: 'caption' } } },
+        { id: 'act-2', component: { Text: { text: { literalString: '• John started "API integration" - 4h ago' }, usageHint: 'caption' } } },
+        { id: 'act-3', component: { Text: { text: { literalString: '• Team meeting notes added - Yesterday' }, usageHint: 'caption' } } },
+        { id: 'chart-card', component: { Card: { child: 'chart-content' } } },
+        { id: 'chart-content', component: { Column: { children: { explicitList: ['chart-title', 'progress-chart'] } } } },
+        { id: 'chart-title', component: { Text: { text: { literalString: '📈 Weekly Progress' }, usageHint: 'h3' } } },
+        { id: 'progress-chart', component: { Chart: { type: 'bar', title: { literalString: 'Tasks Completed' }, data: { path: '/weeklyProgress' } } } }
+      ]
+    }
+  },
+  // Step 12: Add chart data
+  {
+    dataModelUpdate: {
+      surfaceId: 'taskmanager', contents: [
+        {
+          key: 'weeklyProgress', valueList: [
+            { valueMap: [{ key: 'label', valueString: 'Mon' }, { key: 'value', valueInt: 3 }] },
+            { valueMap: [{ key: 'label', valueString: 'Tue' }, { key: 'value', valueInt: 5 }] },
+            { valueMap: [{ key: 'label', valueString: 'Wed' }, { key: 'value', valueInt: 2 }] },
+            { valueMap: [{ key: 'label', valueString: 'Thu' }, { key: 'value', valueInt: 4 }] },
+            { valueMap: [{ key: 'label', valueString: 'Fri' }, { key: 'value', valueInt: 4 }] }
+          ]
+        }
+      ]
+    }
+  }
+];
+
 // Status board stream messages
 const statusMessages = [
   {
@@ -310,7 +532,8 @@ const messageMap = {
   dashboard: dashboardMessages,
   assistant: assistantMessages,
   products: productMessages,
-  statusBoard: statusMessages
+  statusBoard: statusMessages,
+  taskManager: taskManagerMessages
 };
 
 // Simulate streaming JSON messages from an AI agent
@@ -407,7 +630,7 @@ const handleDataUpdate = (update) => console.log('Data update:', update);
 
 <style scoped>
 .streaming-example {
-  max-width: 800px;
+  max-width: 1200px;
   margin: 2rem auto;
   padding: 1rem;
 }
