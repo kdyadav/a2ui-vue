@@ -1,151 +1,352 @@
 <script setup>
+/**
+ * Streaming Example - Shows how to build UI progressively
+ * Simulates an AI agent streaming component definitions
+ */
 import { ref, reactive } from 'vue';
 import A2UISurface from './A2UISurface.vue';
 
-// ================== 1. PARSER ENGINE ==================
-const MODE = { TEXT: 'TEXT', JSON: 'JSON' };
-const DELIMITER = '---a2ui_JSON---';
-const DELIMITER_TEXT = '---a2ui_TEXT---';
-
-// State
-const currentMode = ref(MODE.TEXT);
-const textBuffer = ref('');
-const textHistory = ref([]);
-const jsonBuffer = ref('');
-const surfaces = reactive({});
 const isStreaming = ref(false);
-const scrollRef = ref(null);
+const activeStream = ref(null);
+const surfaces = reactive({});
 
-// ================== DATA UPDATE HANDLER ==================
-/**
- * Handle two-way data binding updates from components
- */
-const handleDataUpdate = ({ path, value, surfaceId }) => {
-  if (!path || !surfaceId || !surfaces[surfaceId]) return;
-
-  // JSON Pointer: path starts with '/'
-  if (!path.startsWith('/')) {
-    console.warn('[A2UI] Invalid path format, must start with /:', path);
-    return;
-  }
-
-  const tokens = path.slice(1).split('/').map(token =>
-    token.replace(/~1/g, '/').replace(/~0/g, '~')
-  );
-
-  // Navigate to parent and set value
-  let current = surfaces[surfaceId].data;
-  for (let i = 0; i < tokens.length - 1; i++) {
-    const token = tokens[i];
-    if (!(token in current)) {
-      current[token] = {};
-    }
-    current = current[token];
-  }
-
-  const lastToken = tokens[tokens.length - 1];
-  current[lastToken] = value;
-
-  console.log(`[A2UI] Data updated: ${path} = ${value}`);
-};
-
-// ================== ACTION HANDLER ==================
-/**
- * Handle actions from components (buttons, etc.)
- */
-const handleAction = (action) => {
-  console.log('[A2UI] Action triggered:', action);
-  // In a real app, this would send the action to the agent
-};
-
-// --- Token Processing ---
-const processToken = (chunk) => {
-  if (currentMode.value === MODE.TEXT) {
-    textBuffer.value += chunk;
-
-    if (textBuffer.value.includes(DELIMITER)) {
-      const parts = textBuffer.value.split(DELIMITER);
-      if (parts[0]) textHistory.value.push(parts[0]);
-
-      textBuffer.value = '';
-      currentMode.value = MODE.JSON;
-
-      if (parts[1]) handleJsonFragment(parts[1]);
-    }
-  } else {
-    // JSON mode - check for switch back to TEXT
-    if (chunk.includes(DELIMITER_TEXT)) {
-      const parts = chunk.split(DELIMITER_TEXT);
-      if (parts[0]) handleJsonFragment(parts[0]);
-
-      currentMode.value = MODE.TEXT;
-      textBuffer.value = parts[1] || '';
-    } else {
-      handleJsonFragment(chunk);
-    }
+// Stream configurations
+const streamConfigs = {
+  dashboard: {
+    name: '📊 Analytics Dashboard',
+    description: 'Dashboard with metrics and charts',
+    surfaceId: 'dashboard'
+  },
+  assistant: {
+    name: '🤖 AI Assistant',
+    description: 'Chat response with action buttons',
+    surfaceId: 'assistant'
+  },
+  products: {
+    name: '🛒 Product Catalog',
+    description: 'E-commerce product cards loading',
+    surfaceId: 'products'
+  },
+  statusBoard: {
+    name: '🚦 Status Board',
+    description: 'Live system status monitoring',
+    surfaceId: 'status'
   }
 };
 
-/**
- * Extract value from A2UI value types (spec-compliant)
- */
+// Dashboard stream messages
+const dashboardMessages = [
+  {
+    surfaceUpdate: {
+      surfaceId: 'dashboard', components: [
+        { id: 'root', component: { Column: { children: { explicitList: ['header', 'metrics-row'] } } } },
+        { id: 'header', component: { Row: { alignment: 'center', children: { explicitList: ['icon', 'title'] } } } },
+        { id: 'icon', component: { Icon: { name: 'analytics' } } },
+        { id: 'title', component: { Text: { text: { literalString: 'Loading Dashboard...' }, usageHint: 'h1' } } }
+      ]
+    }
+  },
+  { beginRendering: { surfaceId: 'dashboard', root: 'root' } },
+  {
+    surfaceUpdate: {
+      surfaceId: 'dashboard', components: [
+        { id: 'metrics-row', component: { Row: { distribution: 'spaceAround', children: { explicitList: ['metric1', 'metric2', 'metric3'] } } } },
+        { id: 'metric1', component: { Metric: { label: 'Users', value: { literalString: '---' } } } },
+        { id: 'metric2', component: { Metric: { label: 'Revenue', value: { literalString: '---' } } } },
+        { id: 'metric3', component: { Metric: { label: 'Growth', value: { literalString: '---' } } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'dashboard', components: [
+        { id: 'title', component: { Text: { text: { literalString: 'Analytics Dashboard' }, usageHint: 'h1' } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'dashboard', components: [
+        { id: 'metric1', component: { Metric: { label: 'Active Users', value: { literalString: '12,847' }, trend: 15.2 } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'dashboard', components: [
+        { id: 'metric2', component: { Metric: { label: 'Revenue', value: { literalString: '$48,293' }, unit: 'USD', trend: 8.7 } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'dashboard', components: [
+        { id: 'metric3', component: { Metric: { label: 'Growth Rate', value: { literalString: '23.5%' }, trend: 3.2 } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'dashboard', components: [
+        { id: 'root', component: { Column: { children: { explicitList: ['header', 'metrics-row', 'chart-section'] } } } },
+        { id: 'chart-section', component: { Card: { child: 'chart' } } },
+        { id: 'chart', component: { Chart: { type: 'bar', title: { literalString: 'Weekly Performance' }, data: { path: '/chartData' } } } }
+      ]
+    }
+  },
+  {
+    dataModelUpdate: {
+      surfaceId: 'dashboard', contents: [
+        {
+          key: 'chartData', valueList: [
+            { valueMap: [{ key: 'label', valueString: 'Mon' }, { key: 'value', valueInt: 65 }] },
+            { valueMap: [{ key: 'label', valueString: 'Tue' }, { key: 'value', valueInt: 78 }] },
+            { valueMap: [{ key: 'label', valueString: 'Wed' }, { key: 'value', valueInt: 52 }] },
+            { valueMap: [{ key: 'label', valueString: 'Thu' }, { key: 'value', valueInt: 91 }] },
+            { valueMap: [{ key: 'label', valueString: 'Fri' }, { key: 'value', valueInt: 84 }] }
+          ]
+        }
+      ]
+    }
+  }
+];
+
+// AI Assistant stream messages
+const assistantMessages = [
+  {
+    surfaceUpdate: {
+      surfaceId: 'assistant', components: [
+        { id: 'root', component: { Card: { child: 'content' } } },
+        { id: 'content', component: { Column: { children: { explicitList: ['thinking'] } } } },
+        { id: 'thinking', component: { Text: { text: { literalString: '🤔 Thinking...' }, usageHint: 'body' } } }
+      ]
+    }
+  },
+  { beginRendering: { surfaceId: 'assistant', root: 'root' } },
+  {
+    surfaceUpdate: {
+      surfaceId: 'assistant', components: [
+        { id: 'content', component: { Column: { children: { explicitList: ['response-header', 'divider', 'response-text'] } } } },
+        { id: 'response-header', component: { Row: { alignment: 'center', children: { explicitList: ['bot-icon', 'bot-name'] } } } },
+        { id: 'bot-icon', component: { Icon: { name: 'smart_toy' } } },
+        { id: 'bot-name', component: { Text: { text: { literalString: 'AI Assistant' }, usageHint: 'h3' } } },
+        { id: 'divider', component: { Divider: {} } },
+        { id: 'response-text', component: { Text: { text: { literalString: 'I found 3 options for your request...' }, usageHint: 'body' } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'assistant', components: [
+        { id: 'content', component: { Column: { children: { explicitList: ['response-header', 'divider', 'response-text', 'options-row'] } } } },
+        { id: 'options-row', component: { Row: { distribution: 'spaceEvenly', children: { explicitList: ['opt1', 'opt2', 'opt3'] } } } },
+        { id: 'opt1', component: { Button: { label: '🎯 Quick Fix', action: { name: 'quickFix' }, variant: 'secondary' } } },
+        { id: 'opt2', component: { Button: { label: '📋 Full Report', action: { name: 'fullReport' }, variant: 'primary' } } },
+        { id: 'opt3', component: { Button: { label: '🔍 Details', action: { name: 'details' }, variant: 'secondary' } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'assistant', components: [
+        { id: 'response-text', component: { Text: { text: { literalString: 'Based on your query, I analyzed the data and found 3 possible solutions. The "Full Report" option provides comprehensive insights, while "Quick Fix" offers an immediate resolution. Select "Details" for more context.' }, usageHint: 'body' } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'assistant', components: [
+        { id: 'content', component: { Column: { children: { explicitList: ['response-header', 'divider', 'response-text', 'options-row', 'feedback-row'] } } } },
+        { id: 'feedback-row', component: { Row: { alignment: 'end', children: { explicitList: ['like-btn', 'dislike-btn'] } } } },
+        { id: 'like-btn', component: { Button: { label: '👍', action: { name: 'like' }, variant: 'secondary' } } },
+        { id: 'dislike-btn', component: { Button: { label: '👎', action: { name: 'dislike' }, variant: 'secondary' } } }
+      ]
+    }
+  }
+];
+
+// Product catalog stream messages
+const productMessages = [
+  {
+    surfaceUpdate: {
+      surfaceId: 'products', components: [
+        { id: 'root', component: { Column: { children: { explicitList: ['header', 'loading'] } } } },
+        { id: 'header', component: { Text: { text: { literalString: '🛒 Featured Products' }, usageHint: 'h1' } } },
+        { id: 'loading', component: { Text: { text: { literalString: 'Loading products...' }, usageHint: 'caption' } } }
+      ]
+    }
+  },
+  { beginRendering: { surfaceId: 'products', root: 'root' } },
+  {
+    surfaceUpdate: {
+      surfaceId: 'products', components: [
+        { id: 'root', component: { Column: { children: { explicitList: ['header', 'product-grid'] } } } },
+        { id: 'product-grid', component: { Row: { children: { explicitList: ['p1'] } } } },
+        { id: 'p1', component: { Card: { child: 'p1-content' } } },
+        { id: 'p1-content', component: { Column: { children: { explicitList: ['p1-img', 'p1-name', 'p1-price', 'p1-btn'] } } } },
+        { id: 'p1-img', component: { Icon: { name: 'headphones' } } },
+        { id: 'p1-name', component: { Text: { text: { literalString: 'Wireless Headphones' }, usageHint: 'h3' } } },
+        { id: 'p1-price', component: { Text: { text: { literalString: '$149.99' }, usageHint: 'body' } } },
+        { id: 'p1-btn', component: { Button: { label: 'Add to Cart', action: { name: 'addToCart', params: { id: 1 } }, variant: 'primary' } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'products', components: [
+        { id: 'product-grid', component: { Row: { children: { explicitList: ['p1', 'p2'] } } } },
+        { id: 'p2', component: { Card: { child: 'p2-content' } } },
+        { id: 'p2-content', component: { Column: { children: { explicitList: ['p2-img', 'p2-name', 'p2-price', 'p2-btn'] } } } },
+        { id: 'p2-img', component: { Icon: { name: 'watch' } } },
+        { id: 'p2-name', component: { Text: { text: { literalString: 'Smart Watch Pro' }, usageHint: 'h3' } } },
+        { id: 'p2-price', component: { Text: { text: { literalString: '$299.00' }, usageHint: 'body' } } },
+        { id: 'p2-btn', component: { Button: { label: 'Add to Cart', action: { name: 'addToCart', params: { id: 2 } }, variant: 'primary' } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'products', components: [
+        { id: 'product-grid', component: { Row: { children: { explicitList: ['p1', 'p2', 'p3'] } } } },
+        { id: 'p3', component: { Card: { child: 'p3-content' } } },
+        { id: 'p3-content', component: { Column: { children: { explicitList: ['p3-img', 'p3-name', 'p3-price', 'p3-btn'] } } } },
+        { id: 'p3-img', component: { Icon: { name: 'speaker' } } },
+        { id: 'p3-name', component: { Text: { text: { literalString: 'Portable Speaker' }, usageHint: 'h3' } } },
+        { id: 'p3-price', component: { Text: { text: { literalString: '$79.99' }, usageHint: 'body' } } },
+        { id: 'p3-btn', component: { Button: { label: 'Add to Cart', action: { name: 'addToCart', params: { id: 3 } }, variant: 'primary' } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'products', components: [
+        { id: 'root', component: { Column: { children: { explicitList: ['header', 'product-grid', 'cart-summary'] } } } },
+        { id: 'cart-summary', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['cart-icon', 'cart-text', 'checkout-btn'] } } } },
+        { id: 'cart-icon', component: { Icon: { name: 'shopping_cart' } } },
+        { id: 'cart-text', component: { Text: { text: { path: '/cartCount' }, usageHint: 'body' } } },
+        { id: 'checkout-btn', component: { Button: { label: 'Checkout', action: { name: 'checkout' }, variant: 'primary' } } }
+      ]
+    }
+  },
+  {
+    dataModelUpdate: {
+      surfaceId: 'products', contents: [
+        { key: 'cartCount', valueString: '0 items in cart' }
+      ]
+    }
+  }
+];
+
+// Status board stream messages
+const statusMessages = [
+  {
+    surfaceUpdate: {
+      surfaceId: 'status', components: [
+        { id: 'root', component: { Column: { children: { explicitList: ['header', 'status-grid'] } } } },
+        { id: 'header', component: { Row: { alignment: 'center', children: { explicitList: ['status-icon', 'status-title', 'refresh-btn'] } } } },
+        { id: 'status-icon', component: { Icon: { name: 'dns' } } },
+        { id: 'status-title', component: { Text: { text: { literalString: 'System Status' }, usageHint: 'h1' } } },
+        { id: 'refresh-btn', component: { Button: { label: '🔄 Refresh', action: { name: 'refresh' }, variant: 'secondary' } } },
+        { id: 'status-grid', component: { Column: { children: { explicitList: [] } } } }
+      ]
+    }
+  },
+  { beginRendering: { surfaceId: 'status', root: 'root' } },
+  {
+    surfaceUpdate: {
+      surfaceId: 'status', components: [
+        { id: 'status-grid', component: { Column: { children: { explicitList: ['api-status'] } } } },
+        { id: 'api-status', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['api-label', 'api-metric'] } } } },
+        { id: 'api-label', component: { Text: { text: { literalString: '🟢 API Server' }, usageHint: 'body' } } },
+        { id: 'api-metric', component: { Metric: { label: 'Response', value: { literalString: '45ms' }, trend: -5 } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'status', components: [
+        { id: 'status-grid', component: { Column: { children: { explicitList: ['api-status', 'db-status'] } } } },
+        { id: 'db-status', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['db-label', 'db-metric'] } } } },
+        { id: 'db-label', component: { Text: { text: { literalString: '🟢 Database' }, usageHint: 'body' } } },
+        { id: 'db-metric', component: { Metric: { label: 'Queries/s', value: { literalString: '1,250' }, trend: 12 } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'status', components: [
+        { id: 'status-grid', component: { Column: { children: { explicitList: ['api-status', 'db-status', 'cache-status'] } } } },
+        { id: 'cache-status', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['cache-label', 'cache-metric'] } } } },
+        { id: 'cache-label', component: { Text: { text: { literalString: '🟡 Cache' }, usageHint: 'body' } } },
+        { id: 'cache-metric', component: { Metric: { label: 'Hit Rate', value: { literalString: '87%' }, trend: -2 } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'status', components: [
+        { id: 'status-grid', component: { Column: { children: { explicitList: ['api-status', 'db-status', 'cache-status', 'cdn-status'] } } } },
+        { id: 'cdn-status', component: { Row: { alignment: 'center', distribution: 'spaceBetween', children: { explicitList: ['cdn-label', 'cdn-metric'] } } } },
+        { id: 'cdn-label', component: { Text: { text: { literalString: '🟢 CDN' }, usageHint: 'body' } } },
+        { id: 'cdn-metric', component: { Metric: { label: 'Latency', value: { literalString: '12ms' }, trend: -8 } } }
+      ]
+    }
+  },
+  {
+    surfaceUpdate: {
+      surfaceId: 'status', components: [
+        { id: 'root', component: { Column: { children: { explicitList: ['header', 'status-grid', 'divider', 'summary'] } } } },
+        { id: 'divider', component: { Divider: {} } },
+        { id: 'summary', component: { Row: { alignment: 'center', distribution: 'spaceAround', children: { explicitList: ['uptime', 'alerts', 'health'] } } } },
+        { id: 'uptime', component: { Metric: { label: 'Uptime', value: { literalString: '99.97%' }, trend: 0.02 } } },
+        { id: 'alerts', component: { Metric: { label: 'Active Alerts', value: { literalString: '1' }, trend: -3 } } },
+        { id: 'health', component: { Metric: { label: 'Health Score', value: { literalString: '95/100' }, trend: 2 } } }
+      ]
+    }
+  }
+];
+
+const messageMap = {
+  dashboard: dashboardMessages,
+  assistant: assistantMessages,
+  products: productMessages,
+  statusBoard: statusMessages
+};
+
+// Simulate streaming JSON messages from an AI agent
+const streamMessages = async (streamType = 'dashboard') => {
+  isStreaming.value = true;
+  activeStream.value = streamType;
+
+  // Reset
+  Object.keys(surfaces).forEach(k => delete surfaces[k]);
+
+  const messages = messageMap[streamType] || dashboardMessages;
+
+  // Stream messages with delay
+  for (const msg of messages) {
+    await new Promise(r => setTimeout(r, 400));
+    processMessage(msg);
+  }
+
+  isStreaming.value = false;
+};
+
 const extractValue = (item) => {
   if ('valueString' in item) return item.valueString;
   if ('valueNumber' in item) return item.valueNumber;
-  if ('valueInt' in item) return item.valueInt; // Legacy support
+  if ('valueInt' in item) return item.valueInt;
   if ('valueBool' in item) return item.valueBool;
-  if ('valueNull' in item) return null;
-
-  if ('valueList' in item) {
-    return item.valueList.map(extractValue);
-  }
-
+  if ('valueList' in item) return item.valueList.map(extractValue);
   if ('valueMap' in item) {
     const obj = {};
-    item.valueMap.forEach(entry => {
-      obj[entry.key] = extractValue(entry);
-    });
+    item.valueMap.forEach(e => obj[e.key] = extractValue(e));
     return obj;
   }
-
-  return undefined;
+  return null;
 };
 
-const handleJsonFragment = (fragment) => {
-  jsonBuffer.value += fragment;
-
-  if (jsonBuffer.value.includes('\n')) {
-    const lines = jsonBuffer.value.split('\n');
-    jsonBuffer.value = lines.pop();
-
-    lines.forEach(line => {
-      if (!line.trim()) return;
-      try {
-        const msg = JSON.parse(line);
-
-        // Validate message structure (A2UI spec compliance)
-        const messageType = Object.keys(msg)[0];
-        const validTypes = ['surfaceUpdate', 'dataModelUpdate', 'beginRendering', 'deleteSurface'];
-
-        if (!validTypes.includes(messageType)) {
-          console.error(`[A2UI] Invalid message type: ${messageType}`);
-          return;
-        }
-
-        if (!msg[messageType]?.surfaceId) {
-          console.error(`[A2UI] Missing surfaceId in ${messageType}`);
-          return;
-        }
-
-        dispatchMessage(msg);
-      } catch (e) {
-        console.error("[A2UI] Parse error:", e, "Line:", line);
-      }
-    });
-  }
-};
-
-const dispatchMessage = (msg) => {
+const processMessage = (msg) => {
   const type = Object.keys(msg)[0];
   const payload = msg[type];
   const { surfaceId } = payload;
@@ -153,244 +354,125 @@ const dispatchMessage = (msg) => {
   if (!surfaces[surfaceId]) {
     surfaces[surfaceId] = { components: {}, data: {}, root: null, isLive: false };
   }
+
   const s = surfaces[surfaceId];
 
   if (type === 'surfaceUpdate') {
     payload.components.forEach(c => s.components[c.id] = c.component);
   } else if (type === 'dataModelUpdate') {
-    // Spec-compliant value extraction
     payload.contents.forEach(item => {
-      const val = extractValue(item);
-      s.data[item.key] = val;
+      s.data[item.key] = extractValue(item);
     });
   } else if (type === 'beginRendering') {
     s.root = payload.root;
     s.isLive = true;
-  } else if (type === 'deleteSurface') {
-    delete surfaces[surfaceId];
   }
 };
 
-// ================== 2. MEGA SIMULATION DATA ==================
-const runSimulation = async () => {
-  if (isStreaming.value) return;
-  isStreaming.value = true;
-
-  // Reset
-  textHistory.value = [];
-  textBuffer.value = '';
-  jsonBuffer.value = '';
-  currentMode.value = MODE.TEXT;
-  Object.keys(surfaces).forEach(k => delete surfaces[k]);
-
-  // THE MEGA STREAM
-  const fullStream = [
-    // --- PHASE 1: RICH TEXT CONTEXT ---
-    "Good morning, **Dave**. I've prepared your home and daily brief.\n\n",
-    "It looks like a busy day ahead. I've detected motion at the **Front Gate**, ",
-    "so I've pulled up the security feed. The weather in **Seattle** is slightly rainy, ",
-    "so you might want to leave 10 minutes early for your commute.\n\n",
-    "Here is your full **Smart Home Dashboard** with 6 active widgets active specifically for your morning routine.",
-    "\n\n",
-
-    "---a2ui_JSON---\n",
-
-    // --- PHASE 2: PARALLEL SURFACE DEFINITIONS (Interleaved) ---
-
-    // 1. LIGHTS (Living Room)
-    '{"surfaceUpdate": {"surfaceId": "lights", "components": [{"id": "root", "component": {"Card": {"child": "col"}}}, {"id": "col", "component": {"Column": {"children": {"explicitList": ["h-row", "l1", "l2"]}}}}, {"id": "h-row", "component": {"Row": {"children": {"explicitList": ["icon", "title"]}}}}, {"id": "icon", "component": {"Icon": {"name": "lightbulb"}}}, {"id": "title", "component": {"Text": {"text": {"literalString": "Lighting"}, "usageHint": "caption"}}}, {"id": "l1", "component": {"Checkbox": {"label": "Living Room (Dim)", "binding": "/l1"}}}, {"id": "l2", "component": {"Checkbox": {"label": "Kitchen (Bright)", "binding": "/l2"}}}]}}\n',
-
-    // Render Lights Surface
-    '{"beginRendering": {"surfaceId": "lights", "root": "root"}}\n',
-
-    // 2. SECURITY (Front Door)
-    '{"surfaceUpdate": {"surfaceId": "security", "components": [{"id": "s-root", "component": {"Card": {"child": "s-col"}}}, {"id": "s-col", "component": {"Column": {"children": {"explicitList": ["s-head", "cam-feed"]}}}}, {"id": "s-head", "component": {"Row": {"children": {"explicitList": ["s-icon", "s-txt"]}}}}, {"id": "s-icon", "component": {"Icon": {"name": "videocam"}}}, {"id": "s-txt", "component": {"Text": {"text": {"literalString": "Front Gate"}, "usageHint": "caption"}}}, {"id": "cam-feed", "component": {"Metric": {"label": "Status", "value": {"literalString": "Motion Detected"}, "trend": "down"}}}]}}\n',
-
-    // Render Security Surface
-    '{"beginRendering": {"surfaceId": "security", "root": "s-root"}}\n',
-
-    // Update Security with additional details
-    '{"surfaceUpdate": {"surfaceId": "security", "components": [{"id": "cam-feed", "component": {"Metric": {"label": "Status", "value": {"literalString": "Motion Detected - 2 people"}, "trend": "down"}}}]}}\n',
-
-    // 3. WEATHER (Metric)
-    '{"surfaceUpdate": {"surfaceId": "weather", "components": [{"id": "w-root", "component": {"Card": {"child": "w-col"}}}, {"id": "w-col", "component": {"Column": {"children": {"explicitList": ["w-icon", "w-val"]}}}}, {"id": "w-icon", "component": {"Icon": {"name": "cloud"}}}, {"id": "w-val", "component": {"Metric": {"label": "Seattle, WA", "value": {"literalString": "12°C"}, "trend": "neutral"}}}]}}\n',
-
-    // Render Weather Surface
-    '{"beginRendering": {"surfaceId": "weather", "root": "w-root"}}\n',
-
-    // Update Weather with precipitation info
-    '{"surfaceUpdate": {"surfaceId": "weather", "components": [{"id": "w-val", "component": {"Metric": {"label": "Seattle, WA - Light Rain", "value": {"literalString": "12°C"}, "trend": "down"}}}]}}\n',
-
-    // 4. REMINDERS (List)
-    '{"surfaceUpdate": {"surfaceId": "tasks", "components": [{"id": "t-root", "component": {"Card": {"child": "t-list"}}}, {"id": "t-list", "component": {"Column": {"children": {"explicitList": ["t-head", "task1", "task2"]}}}}, {"id": "t-head", "component": {"Text": {"text": {"literalString": "To-Do List"}, "usageHint": "caption"}}}, {"id": "task1", "component": {"Checkbox": {"label": "Buy Milk"}}}, {"id": "task2", "component": {"Checkbox": {"label": "Call Mom"}}}]}}\n',
-
-    // Render Tasks Surface
-    '{"beginRendering": {"surfaceId": "tasks", "root": "t-root"}}\n',
-
-    // Update Tasks with a third item
-    '{"surfaceUpdate": {"surfaceId": "tasks", "components": [{"id": "t-list", "component": {"Column": {"children": {"explicitList": ["t-head", "task1", "task2", "task3"]}}}}, {"id": "task3", "component": {"Checkbox": {"label": "Team Meeting at 2 PM"}}}]}}\n',
-
-    // 5. MUSIC (Player)
-    '{"surfaceUpdate": {"surfaceId": "music", "components": [{"id": "m-root", "component": {"Card": {"child": "m-col"}}}, {"id": "m-col", "component": {"Column": {"children": {"explicitList": ["m-head", "m-track", "m-ctrl"]}}}}, {"id": "m-head", "component": {"Row": {"children": {"explicitList": ["m-icon", "m-src"]}}}}, {"id": "m-icon", "component": {"Icon": {"name": "music_note"}}}, {"id": "m-src", "component": {"Text": {"text": {"literalString": "Spotify"}, "usageHint": "caption"}}}, {"id": "m-track", "component": {"Text": {"text": {"literalString": "Morning Jazz Mix"}, "usageHint": "h1"}}}, {"id": "m-ctrl", "component": {"Button": {"child": "play-txt", "action": {"name": "play"}}}}, {"id": "play-txt", "component": {"Text": {"text": {"literalString": "▶ Play"}}}}]}}\n',
-
-    // Render Music Surface
-    '{"beginRendering": {"surfaceId": "music", "root": "m-root"}}\n',
-
-    // Update Music with current track info
-    '{"surfaceUpdate": {"surfaceId": "music", "components": [{"id": "m-track", "component": {"Text": {"text": {"literalString": "Morning Jazz Mix - 24 tracks"}, "usageHint": "h1"}}}]}}\n',
-
-    // 6. HEALTH (Chart)
-    '{"surfaceUpdate": {"surfaceId": "health", "components": [{"id": "h-root", "component": {"Card": {"child": "h-col"}}}, {"id": "h-col", "component": {"Column": {"children": {"explicitList": ["h-title", "h-chart"]}}}}, {"id": "h-title", "component": {"Text": {"text": {"literalString": "Sleep Quality"}, "usageHint": "caption"}}}, {"id": "h-chart", "component": {"Chart": {"type": "bar", "dataBinding": "/sleep"}}}]}}\n',
-
-    // Data for Surface 6 (Health)
-    '{"dataModelUpdate": {"surfaceId": "health", "contents": [{"key": "sleep", "valueList": [{"valueMap": [{"key": "item", "valueString": "M"}, {"key": "val", "valueInt": 70}]}, {"valueMap": [{"key": "item", "valueString": "T"}, {"key": "val", "valueInt": 85}]}, {"valueMap": [{"key": "item", "valueString": "W"}, {"key": "val", "valueInt": 60}]}, {"valueMap": [{"key": "item", "valueString": "T"}, {"key": "val", "valueInt": 90}]}]}]}}\n',
-
-    // Render Health Surface
-    '{"beginRendering": {"surfaceId": "health", "root": "h-root"}}\n',
-
-    // Update Health with additional data point
-    '{"dataModelUpdate": {"surfaceId": "health", "contents": [{"key": "sleep", "valueList": [{"valueMap": [{"key": "item", "valueString": "M"}, {"key": "val", "valueInt": 70}]}, {"valueMap": [{"key": "item", "valueString": "T"}, {"key": "val", "valueInt": 85}]}, {"valueMap": [{"key": "item", "valueString": "W"}, {"key": "val", "valueInt": 60}]}, {"valueMap": [{"key": "item", "valueString": "T"}, {"key": "val", "valueInt": 90}]}, {"valueMap": [{"key": "item", "valueString": "F"}, {"key": "val", "valueInt": 75}]}]}]}}\n',
-
-    // --- PHASE 3: FINAL UPDATES TO ALL SURFACES ---
-
-    // Final update to Lights - add bedroom light
-    '{"surfaceUpdate": {"surfaceId": "lights", "components": [{"id": "col", "component": {"Column": {"children": {"explicitList": ["h-row", "l1", "l2", "l3"]}}}}, {"id": "l3", "component": {"Checkbox": {"label": "Bedroom (Off)", "binding": "/l3"}}}]}}\n',
-
-    // Final update to Security - status change
-    '{"surfaceUpdate": {"surfaceId": "security", "components": [{"id": "cam-feed", "component": {"Metric": {"label": "Status", "value": {"literalString": "All Clear"}, "trend": "up"}}}]}}\n',
-
-    // Final update to Weather - add wind info
-    '{"surfaceUpdate": {"surfaceId": "weather", "components": [{"id": "w-col", "component": {"Column": {"children": {"explicitList": ["w-icon", "w-val", "w-wind"]}}}}, {"id": "w-wind", "component": {"Text": {"text": {"literalString": "Wind: 15 km/h NW"}}}}]}}\n',
-
-    // Final update to Tasks - mark first task complete
-    '{"dataModelUpdate": {"surfaceId": "tasks", "contents": [{"key": "task1_done", "valueBool": true}]}}\n',
-
-    // Final update to Music - add volume control
-    '{"surfaceUpdate": {"surfaceId": "music", "components": [{"id": "m-col", "component": {"Column": {"children": {"explicitList": ["m-head", "m-track", "m-ctrl", "m-vol"]}}}}, {"id": "m-vol", "component": {"Text": {"text": {"literalString": "Volume: 65%"}}}}]}}\n',
-
-    // Final update to Health - update title with average
-    '{"surfaceUpdate": {"surfaceId": "health", "components": [{"id": "h-title", "component": {"Text": {"text": {"literalString": "Sleep Quality - Avg: 76%"}, "usageHint": "caption"}}}]}}\n',
-
-    // --- PHASE 4: CLOSING TEXT ---
-    // Switch back to TEXT mode with delimiter
-    "---a2ui_TEXT---",
-    "\n\nAll systems are **operational** and your dashboard is now fully loaded. ",
-    "I've synchronized all 6 widgets with real-time data from your smart home devices.\n\n",
-    "Your **energy consumption** is 15% lower than yesterday, and I've optimized the thermostat ",
-    "settings based on today's weather forecast. The **security system** is armed and all entry points ",
-    "are secure.\n\n",
-    "Would you like me to start your **morning playlist** or adjust any of the lighting scenes? ",
-    "I'm here to help make your day more comfortable and productive."
-  ].join("");
-
-  // CHAOS STREAMER
-  let cursor = 0;
-  while (cursor < fullStream.length) {
-    const size = Math.floor(Math.random() * 25) + 1; // 1-25 chars
-    const chunk = fullStream.slice(cursor, cursor + size);
-    processToken(chunk);
-    cursor += size;
-    await new Promise(r => setTimeout(r, Math.random() * 60 + 5)); // 5-65ms delay
-
-    if (scrollRef.value) scrollRef.value.scrollTop = scrollRef.value.scrollHeight;
-  }
-  isStreaming.value = false;
-};
+const handleAction = (action) => console.log('Action:', action);
+const handleDataUpdate = (update) => console.log('Data update:', update);
 </script>
 
 <template>
-  <div class="h-screen bg-[#131314] flex text-gray-200 font-sans overflow-hidden">
+  <div class="streaming-example">
+    <div class="controls">
+      <h2>Streaming UI Examples</h2>
+      <p>Watch different UIs build progressively as messages stream in.</p>
 
-    <div class="flex-1 flex flex-col relative bg-white">
-
-      <div class="h-14 border-b border-gray-100 flex items-center justify-between px-6 bg-white z-10">
-        <div class="flex items-center gap-2">
-          <span class="text-lg font-medium text-gray-700">NaaviX Home</span>
-          <span
-            class="text-[10px] bg-purple-50 text-purple-600 px-2 py-0.5 rounded-full font-bold tracking-wide">6-SURFACE
-            DEMO</span>
-        </div>
-        <button @click="runSimulation" :disabled="isStreaming"
-          class="bg-black text-white text-xs px-5 py-2 rounded-full hover:bg-gray-800 disabled:opacity-50 transition-all shadow-lg flex items-center gap-2">
-          <span v-if="isStreaming" class="material-icons text-xs animate-spin">sync</span>
-          {{ isStreaming ? 'STREAMING DATA...' : 'RUN MEGA-SIMULATION' }}
+      <div class="stream-buttons">
+        <button v-for="(config, key) in streamConfigs" :key="key" @click="streamMessages(key)" :disabled="isStreaming"
+          :class="{ active: activeStream === key }">
+          {{ config.name }}
         </button>
       </div>
 
-      <div ref="scrollRef" class="flex-1 overflow-y-auto bg-[#F0F4F9] p-6 pb-20">
-        <div class="max-w-6xl mx-auto space-y-8">
-          <div class="flex justify-end">
-            <div
-              class="bg-[#E7F0FE] text-gray-800 px-6 py-4 rounded-[24px] rounded-tr-sm max-w-lg shadow-sm text-[15px]">
-              Good morning. What's the status of the house?
-            </div>
-          </div>
-
-          <div class="flex gap-4 items-start">
-            <div
-              class="w-8 h-8 rounded-full bg-gradient-to-tr from-purple-500 to-indigo-500 flex-shrink-0 mt-1 shadow-md flex items-center justify-center text-xs font-bold text-white">
-              AI</div>
-
-            <div class="flex-1 space-y-6 min-w-0">
-
-              <div v-if="textHistory.length || textBuffer" class="text-gray-800 text-[16px] leading-relaxed max-w-2xl">
-                <span v-for="(t, i) in textHistory" :key="i"
-                  v-html="t.replace(/\*\*(.*?)\*\*/g, '<b>$1</b>').replace(/\n/g, '<br>')"></span>
-                <span v-if="textBuffer">{{ textBuffer }}</span>
-                <span v-if="textBuffer"
-                  class="inline-block w-2 h-4 bg-purple-500 ml-0.5 align-middle animate-pulse rounded-full"></span>
-              </div>
-
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-
-                <template v-for="(name, index) in ['lights', 'security', 'weather', 'tasks', 'music', 'health']"
-                  :key="name">
-                  <div class="transition-all duration-700">
-
-                    <div v-if="!surfaces[name]?.isLive && currentMode === 'JSON'"
-                      class="bg-white p-6 rounded-3xl shadow-sm border border-white/50 animate-pulse h-48 flex flex-col justify-between"
-                      :style="{ animationDelay: `${index * 100}ms` }">
-                      <div class="h-4 bg-gray-200 rounded w-1/3"></div>
-                      <div class="h-20 bg-gray-100 rounded-xl"></div>
-                    </div>
-
-                    <div v-else-if="surfaces[name]?.isLive" class="animate-enter h-full">
-                      <A2UISurface :componentId="surfaces[name].root" :components="surfaces[name].components"
-                        :data="surfaces[name].data" :surfaceId="name" @action="handleAction"
-                        @dataUpdate="handleDataUpdate" />
-                    </div>
-
-                  </div>
-                </template>
-
-              </div>
-
-            </div>
-          </div>
-        </div>
-      </div>
+      <p v-if="activeStream" class="stream-description">
+        {{ streamConfigs[activeStream]?.description }}
+      </p>
     </div>
 
+    <!-- Dynamic surface rendering based on active stream -->
+    <div v-if="activeStream && surfaces[streamConfigs[activeStream]?.surfaceId]?.isLive" class="surface-container">
+      <A2UISurface :componentId="surfaces[streamConfigs[activeStream].surfaceId].root"
+        :components="surfaces[streamConfigs[activeStream].surfaceId].components"
+        :data="surfaces[streamConfigs[activeStream].surfaceId].data" :surfaceId="streamConfigs[activeStream].surfaceId"
+        @action="handleAction" @dataUpdate="handleDataUpdate" />
+    </div>
+    <div v-else class="placeholder">
+      <span v-if="isStreaming">⏳ Building UI...</span>
+      <span v-else>👆 Select a stream example above to begin</span>
+    </div>
   </div>
 </template>
 
-<style>
-@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import url('https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css');
-
-.animate-enter {
-  animation: popIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+<style scoped>
+.streaming-example {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 1rem;
 }
 
-@keyframes popIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95) translateY(10px);
-  }
+.controls {
+  text-align: center;
+  margin-bottom: 2rem;
+}
 
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
+.stream-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin: 1.5rem 0;
+}
+
+.stream-buttons button {
+  background: #f3f4f6;
+  color: #374151;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid transparent;
+  border-radius: 9999px;
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.2s;
+}
+
+.stream-buttons button:hover:not(:disabled) {
+  background: #e5e7eb;
+  border-color: #d1d5db;
+}
+
+.stream-buttons button.active {
+  background: #2563eb;
+  color: white;
+  border-color: #2563eb;
+}
+
+.stream-buttons button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stream-description {
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-style: italic;
+  margin-top: 0.5rem;
+}
+
+.surface-container {
+  background: #f9fafb;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  min-height: 200px;
+}
+
+.placeholder {
+  text-align: center;
+  padding: 4rem;
+  background: #f3f4f6;
+  border-radius: 1rem;
+  color: #6b7280;
+  font-size: 1.1rem;
 }
 </style>

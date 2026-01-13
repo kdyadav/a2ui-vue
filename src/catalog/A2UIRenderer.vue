@@ -3,7 +3,7 @@ export default { name: 'A2UIRenderer' };
 </script>
 
 <script setup>
-import { computed, defineAsyncComponent } from 'vue';
+import { computed } from 'vue';
 import { getComponent, A2UI_COMPONENT_PROPS, A2UI_COMPONENT_EMITS } from './index.js';
 
 const props = defineProps(A2UI_COMPONENT_PROPS);
