@@ -46,20 +46,55 @@ const getChartLabel = (pt, i) => {
 
 // Draw/Update Chart Logic
 const drawChart = () => {
-    if (!chartRef.value || !window.Plotly || type.value !== 'Chart') return;
+    console.log('drawChart called, chartRef:', !!chartRef.value, 'Plotly:', !!window.Plotly, 'type:', type.value);
 
-    const rawData = resolve(args.value.dataBinding);
-    if (!Array.isArray(rawData)) return;
+    if (!chartRef.value) {
+        console.warn('Chart ref not available');
+        return;
+    }
+
+    if (!window.Plotly) {
+        console.warn('Plotly not loaded');
+        return;
+    }
+
+    if (type.value !== 'Chart') {
+        return;
+    }
+
+    console.log('Chart args:', args.value);
+    console.log('Chart dataBinding:', args.value.dataBinding);
+    console.log('All props.data:', props.data);
+
+    // Handle both string paths and object paths
+    let rawData;
+    if (typeof args.value.dataBinding === 'string') {
+        // Direct string path like "/path"
+        const parts = args.value.dataBinding.split('/').filter(p => p);
+        rawData = parts.reduce((acc, k) => (acc && acc[k] !== undefined) ? acc[k] : undefined, props.data);
+    } else {
+        // Object with path property like {path: "/path"}
+        rawData = resolve(args.value.dataBinding);
+    }
+
+    console.log('Chart rawData after resolve:', rawData, 'isArray:', Array.isArray(rawData)); // Debug log
+
+    if (!Array.isArray(rawData) || rawData.length === 0) {
+        console.warn('Chart data is not an array or is empty:', rawData);
+        return;
+    }
 
     // Transform Data for Plotly
     const xValues = rawData.map((pt, i) => getChartLabel(pt, i));
     const yValues = rawData.map((pt) => getChartValue(pt));
 
+    console.log('Chart xValues:', xValues, 'yValues:', yValues); // Debug log
+
     const trace = {
         x: xValues,
         y: yValues,
         type: args.value.type === 'line' ? 'scatter' : 'bar',
-        mode: 'lines+markers', // for line charts
+        mode: args.value.type === 'line' ? 'lines+markers' : undefined, // only for line charts
         marker: {
             color: '#6366f1', // Indigo-500
             opacity: 0.8,
@@ -68,32 +103,33 @@ const drawChart = () => {
                 width: 1
             }
         },
-        line: {
+        line: args.value.type === 'line' ? {
             color: '#6366f1',
             width: 3,
             shape: 'spline'
-        }
+        } : undefined
     };
 
     const layout = {
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
-        margin: { t: 5, b: 20, l: 25, r: 5 }, // Tight margins for card layout
+        margin: { t: 10, b: 30, l: 35, r: 10 }, // Adjusted margins for better visibility
         showlegend: false,
         xaxis: {
             showgrid: false,
             zeroline: false,
-            tickfont: { color: '#71717a', size: 9 }, // Zinc-500
+            tickfont: { color: '#71717a', size: 10 }, // Zinc-500
             fixedrange: true
         },
         yaxis: {
             showgrid: true,
             gridcolor: '#27272a', // Zinc-800
             zeroline: false,
-            tickfont: { color: '#71717a', size: 9 },
+            tickfont: { color: '#71717a', size: 10 },
             fixedrange: true
         },
-        autosize: true
+        autosize: true,
+        height: 128 // Match the h-32 class (32 * 4px = 128px)
     };
 
     const config = {
@@ -106,13 +142,31 @@ const drawChart = () => {
 };
 
 // Watch for data changes to redraw
-watch(() => resolve(args.value.dataBinding), () => {
-    nextTick(drawChart);
+watch(() => props.data, () => {
+    if (type.value === 'Chart') {
+        console.log('Data changed, redrawing chart');
+        nextTick(() => {
+            setTimeout(drawChart, 50);
+        });
+    }
 }, { deep: true });
 
+// Watch for component type changes
+watch(() => type.value, (newType) => {
+    console.log('Component type changed to:', newType);
+    if (newType === 'Chart') {
+        nextTick(() => {
+            setTimeout(drawChart, 100);
+        });
+    }
+});
+
 onMounted(() => {
-    // Initial draw
-    setTimeout(drawChart, 100); // Small delay to ensure container size
+    console.log('Component mounted, type:', type.value);
+    if (type.value === 'Chart') {
+        // Initial draw with delay to ensure Plotly is loaded and container has size
+        setTimeout(drawChart, 300);
+    }
 });
 </script>
 
@@ -178,8 +232,11 @@ onMounted(() => {
         <div class="text-xl font-mono text-zinc-300 mt-1 tracking-tight">{{ resolve(args.value) || '--' }}</div>
     </div>
 
-    <div v-else-if="type === 'Chart'" class="w-full h-24 mt-auto">
-        <div ref="chartRef" class="w-full h-full"></div>
+    <div v-else-if="type === 'Chart'" class="w-full h-32 mt-2 bg-zinc-900/30 rounded-lg relative">
+        <div ref="chartRef" class="w-full h-full min-h-[128px]"></div>
+        <div v-if="!chartRef" class="absolute inset-0 flex items-center justify-center text-zinc-600 text-xs">
+            Loading chart...
+        </div>
     </div>
 
     <button v-else-if="type === 'Button'" @click="$emit('action', args.action)"
