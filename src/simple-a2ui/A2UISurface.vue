@@ -3,19 +3,22 @@ export default { name: 'A2UISurface' }
 </script>
 
 <script setup>
-import { computed } from 'vue';
+import { computed, ref, onMounted, watch, nextTick } from 'vue';
 
 const props = defineProps(['componentId', 'components', 'data']);
 const emit = defineEmits(['action']);
 
+// --- COMPONENT RESOLVER ---
 const compDef = computed(() => props.components[props.componentId]);
 const type = computed(() => compDef.value ? Object.keys(compDef.value)[0] : null);
 const args = computed(() => compDef.value ? compDef.value[type.value] : {});
 
+// --- DATA UNPACKER ---
 const resolve = (valObj, localData = props.data) => {
     if (valObj?.literalString) return valObj.literalString;
     if (valObj?.literalNumber) return valObj.literalNumber;
     if (valObj?.literalBool !== undefined) return valObj.literalBool;
+
     if (valObj?.path) {
         const parts = valObj.path.split('/').filter(p => p);
         return parts.reduce((acc, k) => (acc && acc[k] !== undefined) ? acc[k] : undefined, localData);
@@ -23,12 +26,94 @@ const resolve = (valObj, localData = props.data) => {
     return valObj;
 };
 
-// HELPER: Safely extract chart values regardless of data shape
+// --- PLOTLY INTEGRATION ---
+const chartRef = ref(null);
+
 const getChartValue = (pt) => {
     if (typeof pt === 'number') return pt;
-    if (pt && typeof pt === 'object' && pt.val !== undefined) return pt.val;
+    if (typeof pt === 'string') return parseFloat(pt);
+    if (pt && typeof pt === 'object') {
+        if (pt.val !== undefined) return pt.val;
+        if (pt.value !== undefined) return pt.value;
+    }
     return 0;
 };
+
+const getChartLabel = (pt, i) => {
+    if (pt && typeof pt === 'object' && pt.item) return pt.item;
+    return i;
+};
+
+// Draw/Update Chart Logic
+const drawChart = () => {
+    if (!chartRef.value || !window.Plotly || type.value !== 'Chart') return;
+
+    const rawData = resolve(args.value.dataBinding);
+    if (!Array.isArray(rawData)) return;
+
+    // Transform Data for Plotly
+    const xValues = rawData.map((pt, i) => getChartLabel(pt, i));
+    const yValues = rawData.map((pt) => getChartValue(pt));
+
+    const trace = {
+        x: xValues,
+        y: yValues,
+        type: args.value.type === 'line' ? 'scatter' : 'bar',
+        mode: 'lines+markers', // for line charts
+        marker: {
+            color: '#6366f1', // Indigo-500
+            opacity: 0.8,
+            line: {
+                color: '#818cf8', // Indigo-400
+                width: 1
+            }
+        },
+        line: {
+            color: '#6366f1',
+            width: 3,
+            shape: 'spline'
+        }
+    };
+
+    const layout = {
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        margin: { t: 5, b: 20, l: 25, r: 5 }, // Tight margins for card layout
+        showlegend: false,
+        xaxis: {
+            showgrid: false,
+            zeroline: false,
+            tickfont: { color: '#71717a', size: 9 }, // Zinc-500
+            fixedrange: true
+        },
+        yaxis: {
+            showgrid: true,
+            gridcolor: '#27272a', // Zinc-800
+            zeroline: false,
+            tickfont: { color: '#71717a', size: 9 },
+            fixedrange: true
+        },
+        autosize: true
+    };
+
+    const config = {
+        displayModeBar: false,
+        responsive: true
+    };
+
+    // Use react() for efficient updates (handles newPlot vs update automatically)
+    window.Plotly.react(chartRef.value, [trace], layout, config);
+};
+
+// Watch for data changes to redraw
+watch(() => resolve(args.value.dataBinding), () => {
+    nextTick(drawChart);
+}, { deep: true });
+
+onMounted(() => {
+    // Initial draw
+    setTimeout(drawChart, 100); // Small delay to ensure container size
+});
 </script>
 
 <template>
@@ -74,7 +159,7 @@ const getChartValue = (pt) => {
     </div>
 
     <div v-else-if="type === 'ProgressBar'" class="w-full mt-3">
-        <div class="h-3 w-full bg-zinc-800 rounded-full overflow-hidden border border-zinc-800">
+        <div class="h-1.5 w-full bg-zinc-800 rounded-full overflow-hidden">
             <div class="h-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.6)] transition-all duration-700 ease-out"
                 :style="{ width: `${Math.min(100, Math.max(0, resolve(args.value) || 0))}%` }">
             </div>
@@ -93,19 +178,8 @@ const getChartValue = (pt) => {
         <div class="text-xl font-mono text-zinc-300 mt-1 tracking-tight">{{ resolve(args.value) || '--' }}</div>
     </div>
 
-    <div v-else-if="type === 'Chart'" class="w-full pt-6 mt-auto">
-        <div class="flex items-end gap-1 h-20 w-full">
-            <div v-for="(pt, i) in (resolve(args.dataBinding) || [])" :key="i"
-                class="flex-1 bg-indigo-500/60 rounded-t-[1px] relative group hover:bg-indigo-500/90 transition-all duration-300 min-h-[2px]"
-                :style="{ height: `${getChartValue(pt)}%` }">
-
-                <div
-                    class="absolute -top-7 left-1/2 -translate-x-1/2 bg-zinc-900 text-white text-[10px] px-2 py-0.5 rounded border border-zinc-700 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-20 pointer-events-none">
-                    {{ getChartValue(pt) }}
-                </div>
-            </div>
-        </div>
-        <div class="w-full h-px bg-zinc-800 mt-px"></div>
+    <div v-else-if="type === 'Chart'" class="w-full h-24 mt-auto">
+        <div ref="chartRef" class="w-full h-full"></div>
     </div>
 
     <button v-else-if="type === 'Button'" @click="$emit('action', args.action)"

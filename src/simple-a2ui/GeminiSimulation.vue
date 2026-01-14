@@ -14,7 +14,7 @@ const surfaces = reactive({});
 const isStreaming = ref(false);
 const scrollRef = ref(null);
 
-// FIX: Robust Data Unpacker for A2UI types
+// HELPER: Recursively unpack A2UI Typed Values into standard JS
 const unpackValue = (item) => {
   if (!item) return null;
 
@@ -24,21 +24,21 @@ const unpackValue = (item) => {
   if (item.valueNumber !== undefined) return item.valueNumber;
   if (item.valueBool !== undefined) return item.valueBool;
 
-  // Lists: Recursively unpack
+  // Complex: Lists (Recursively unpack items)
   if (item.valueList) {
     return item.valueList.map(listItem => unpackValue(listItem));
   }
 
-  // Maps: Convert [{key: 'a', valueString: 'b'}] -> {a: 'b'}
+  // Complex: Maps (Convert [{key: 'a', valueString: 'b'}] -> {a: 'b'})
   if (item.valueMap) {
     return item.valueMap.reduce((acc, field) => {
-      // Sometimes map items are wrapped, sometimes flat.
-      // We check if 'key' exists at top level.
+      // If the map item has a 'key' property, use it. 
+      // Otherwise, it might be a direct list item wrapper.
       if (field.key) {
         acc[field.key] = unpackValue(field);
       } else {
-        // If it's a list of unnamed maps, simply merge them or handle as object
-        Object.assign(acc, unpackValue(field));
+        // Fallback for flat maps if needed
+        return unpackValue(field);
       }
       return acc;
     }, {});
@@ -61,12 +61,12 @@ const processToken = (chunk) => {
     handleJsonFragment(chunk);
   }
 
-  // Smart Autoscroll
   nextTick(() => {
     if (scrollRef.value) {
-      const { scrollHeight, clientHeight, scrollTop } = scrollRef.value;
-      const isNearBottom = scrollHeight - scrollTop - clientHeight < 200;
-      if (isNearBottom) scrollRef.value.scrollTop = scrollHeight;
+      const { scrollHeight, clientHeight } = scrollRef.value;
+      if (scrollHeight - clientHeight < 200) { // Only autoscroll if near bottom
+        scrollRef.value.scrollTop = scrollHeight;
+      }
     }
   });
 };
@@ -105,7 +105,7 @@ const dispatchMessage = (msg) => {
     payload.components.forEach(c => s.components[c.id] = c.component);
   } else if (type === 'dataModelUpdate') {
     payload.contents.forEach(item => {
-      // FIX: Use the unpacker
+      // USE THE NEW UNPACKER
       s.data[item.key] = unpackValue(item);
     });
   } else if (type === 'beginRendering') {
@@ -126,7 +126,7 @@ const runSimulation = async () => {
   currentMode.value = MODE.TEXT;
   Object.keys(surfaces).forEach(k => delete surfaces[k]);
 
-  // SCENARIO: ORBITAL LAUNCH
+  // SCENARIO: ORBITAL LAUNCH (Fixed Data Structures)
   const fullStream = [
     "Initiating **Orbital Launch Sequence**. \n",
     "Telemetry link established. Stand by for system pre-check...",
@@ -142,7 +142,7 @@ const runSimulation = async () => {
     '{"dataModelUpdate": {"surfaceId": "loader", "contents": [{"key": "progress", "valueInt": 100}]}}\n',
     '{"deleteSurface": {"surfaceId": "loader"}}\n',
 
-    // MAIN DASHBOARD
+    // MAIN DASHBOARD COMPONENTS
     '{"surfaceUpdate": {"surfaceId": "telemetry", "components": [{"id": "t-root", "component": {"Card": {"child": "t-col"}}}, {"id": "t-col", "component": {"Column": {"children": {"explicitList": ["t-head", "t-metrics"]}}}}, {"id": "t-head", "component": {"Row": {"children": {"explicitList": ["t-icon", "t-txt"]}}}}, {"id": "t-icon", "component": {"Icon": {"name": "speed"}}}, {"id": "t-txt", "component": {"Text": {"text": {"literalString": "Velocity Vector"}, "usageHint": "caption"}}}, {"id": "t-metrics", "component": {"Row": {"children": {"explicitList": ["vel", "alt"]}}}}, {"id": "vel", "component": {"Metric": {"label": "Speed", "value": {"path": "/speed"}, "trend": "up"}}}, {"id": "alt", "component": {"Metric": {"label": "Altitude", "value": {"path": "/alt"}, "trend": "up"}}}]}}\n',
 
     '{"surfaceUpdate": {"surfaceId": "fuel", "components": [{"id": "f-root", "component": {"Card": {"child": "f-col"}}}, {"id": "f-col", "component": {"Column": {"children": {"explicitList": ["f-head", "tank1", "tank2"]}}}}, {"id": "f-head", "component": {"Text": {"text": {"literalString": "Propellant Levels"}, "usageHint": "caption"}}}, {"id": "tank1", "component": {"ProgressBar": {"value": {"path": "/lox"}}}}, {"id": "tank2", "component": {"ProgressBar": {"value": {"path": "/ch4"}}}}]}}\n',
@@ -153,14 +153,14 @@ const runSimulation = async () => {
 
     '{"surfaceUpdate": {"surfaceId": "ctrl", "components": [{"id": "ct-root", "component": {"Card": {"child": "ct-col"}}}, {"id": "ct-col", "component": {"Column": {"children": {"explicitList": ["ct-head", "ct-btn"]}}}}, {"id": "ct-head", "component": {"Text": {"text": {"literalString": "Manual Override"}, "usageHint": "caption"}}}, {"id": "ct-btn", "component": {"Button": {"child": "abt", "action": {"name": "abort"}}}}, {"id": "abt", "component": {"Text": {"text": {"literalString": "INITIATE ABORT"}}}}]}}\n',
 
-    // RENDER & DATA - Fixed Order and Data Structure
+    // RENDER & DATA
+    // We update data BEFORE rendering to ensure the first paint has values
     '{"dataModelUpdate": {"surfaceId": "telemetry", "contents": [{"key": "speed", "valueString": "24,500"}, {"key": "alt", "valueString": "180 km"}]}}\n',
     '{"beginRendering": {"surfaceId": "telemetry", "root": "t-root"}}\n',
 
     '{"dataModelUpdate": {"surfaceId": "fuel", "contents": [{"key": "lox", "valueInt": 85}, {"key": "ch4", "valueInt": 92}]}}\n',
     '{"beginRendering": {"surfaceId": "fuel", "root": "f-root"}}\n',
 
-    // FIX: Nav Chart Data - Valid List structure for Unpacker
     '{"dataModelUpdate": {"surfaceId": "nav", "contents": [{"key": "path", "valueList": [{"valueMap": [{"key": "val", "valueInt": 20}]}, {"valueMap": [{"key": "val", "valueInt": 40}]}, {"valueMap": [{"key": "val", "valueInt": 60}]}, {"valueMap": [{"key": "val", "valueInt": 80}]}]}]}}\n',
     '{"beginRendering": {"surfaceId": "nav", "root": "n-root"}}\n',
 
@@ -176,7 +176,7 @@ const runSimulation = async () => {
     const chunk = fullStream.slice(cursor, cursor + size);
     processToken(chunk);
     cursor += size;
-    await new Promise(r => setTimeout(r, Math.random() * 50 + 10));
+    await new Promise(r => setTimeout(r, Math.random() * 1 + 10));
   }
   isStreaming.value = false;
 };
@@ -230,27 +230,9 @@ const runSimulation = async () => {
                 <div v-if="surfaces[name]" class="transition-all duration-500 h-full">
 
                   <div v-if="!surfaces[name].isLive"
-                    class="bg-[#18181b] border border-zinc-800 p-6 rounded-2xl h-48 flex flex-col gap-4 relative overflow-hidden">
-                    <!-- Shimmer effect -->
-                    <div
-                      class="absolute inset-0 -translate-x-full animate-shimmer bg-gradient-to-r from-transparent via-zinc-700/10 to-transparent">
-                    </div>
-
-                    <!-- Header skeleton -->
-                    <div class="flex items-center gap-3">
-                      <div class="w-5 h-5 bg-zinc-800 rounded animate-pulse-slow"></div>
-                      <div class="h-3 bg-zinc-800 rounded w-1/3 animate-pulse-slow" style="animation-delay: 0.1s"></div>
-                    </div>
-
-                    <!-- Content skeleton -->
-                    <div class="flex-1 flex flex-col gap-3">
-                      <div class="h-4 bg-zinc-800/70 rounded w-2/3 animate-pulse-slow" style="animation-delay: 0.2s">
-                      </div>
-                      <div class="h-4 bg-zinc-800/50 rounded w-1/2 animate-pulse-slow" style="animation-delay: 0.3s">
-                      </div>
-                      <div class="flex-1 bg-zinc-800/30 rounded-lg animate-pulse-slow" style="animation-delay: 0.4s">
-                      </div>
-                    </div>
+                    class="bg-[#18181b] border border-zinc-800 p-6 rounded-2xl animate-pulse h-48 flex flex-col gap-4">
+                    <div class="h-3 bg-zinc-800 rounded w-1/3"></div>
+                    <div class="h-full bg-zinc-800/50 rounded-lg"></div>
                   </div>
 
                   <div v-else class="animate-slide-up h-full">
@@ -299,14 +281,6 @@ const runSimulation = async () => {
   animation: fadeIn 0.5s ease-out forwards;
 }
 
-.animate-shimmer {
-  animation: shimmer 2s infinite;
-}
-
-.animate-pulse-slow {
-  animation: pulseSlow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-}
-
 @keyframes slideUp {
   from {
     opacity: 0;
@@ -326,28 +300,6 @@ const runSimulation = async () => {
 
   to {
     opacity: 1;
-  }
-}
-
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(100%);
-  }
-}
-
-@keyframes pulseSlow {
-
-  0%,
-  100% {
-    opacity: 1;
-  }
-
-  50% {
-    opacity: 0.5;
   }
 }
 
