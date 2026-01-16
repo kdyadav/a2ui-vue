@@ -176,7 +176,7 @@ const runSimulation = async () => {
     const chunk = fullStream.slice(cursor, cursor + size);
     processToken(chunk);
     cursor += size;
-    await new Promise(r => setTimeout(r, Math.random() * 1 + 1));
+    await new Promise(r => setTimeout(r, Math.random() * 20 + 10));
   }
   isStreaming.value = false;
 };
