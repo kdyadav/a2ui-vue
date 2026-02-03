@@ -4,7 +4,7 @@ export default { name: 'A2UISurface' }
 
 <script setup>
 import { computed } from 'vue';
-import { getComponent } from '@/components/a2ui';
+import { getComponent } from '@/catalog';
 
 const props = defineProps(['componentId', 'components', 'data']);
 const emit = defineEmits(['action']);
