@@ -230,131 +230,131 @@ const runSimulation = async () => {
   currentMode.value = MODE.TEXT;
   Object.keys(surfaces).forEach((k) => delete surfaces[k]);
 
-  // SCENARIO: PRODUCTION DASHBOARD - Comprehensive A2UI showcase with all components
+  // SCENARIO: ADVANCED ENTERPRISE ANALYTICS PLATFORM - Ultra-detailed A2UI showcase
   const fullStream = [
     // TEXT SECTION 1 - INTRODUCTION
-    "🚀 MISSION CONTROL DASHBOARD v3.0\n",
-    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
-    "Initializing production-level monitoring system...\n\n",
+    "🌐 ENTERPRISE ANALYTICS PLATFORM v5.2.1\n",
+    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
+    "Initializing comprehensive multi-tenant analytics dashboard...\n",
+    "Connecting to data sources: PostgreSQL, MongoDB, Redis, Elasticsearch\n",
+    "Establishing secure WebSocket connections...\n\n",
 
-    // JSON SECTION 1 - HEADER WITH TITLE
+    // JSON SECTION 1 - MAIN HEADER WITH BRANDING
     "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "header", "components": [{"id": "hdr-root", "component": {"Card": {"child": "hdr-col"}}}, {"id": "hdr-col", "component": {"Column": {"gap": 2, "children": {"explicitList": ["hdr-title", "hdr-subtitle"]}}}}, {"id": "hdr-title", "component": {"Text": {"text": {"literalString": "Mission Control Dashboard"}, "usageHint": "h1"}}}, {"id": "hdr-subtitle", "component": {"Text": {"text": {"literalString": "Real-time spacecraft monitoring and telemetry system"}, "usageHint": "body"}}}]}}\n',
-    '{"beginRendering": {"surfaceId": "header", "root": "hdr-root"}}\n',
+    '{"surfaceUpdate": {"surfaceId": "main-header", "components": [{"id": "mh-root", "component": {"Card": {"child": "mh-container"}}}, {"id": "mh-container", "component": {"Column": {"gap": 3, "children": {"explicitList": ["mh-top-row", "mh-subtitle", "mh-breadcrumb"]}}}}, {"id": "mh-top-row", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["mh-icon", "mh-title", "mh-badge"]}}}}, {"id": "mh-icon", "component": {"Icon": {"name": "analytics"}}}, {"id": "mh-title", "component": {"Text": {"text": {"literalString": "Enterprise Analytics Platform"}, "usageHint": "h1"}}}, {"id": "mh-badge", "component": {"Text": {"text": {"literalString": "PRODUCTION"}, "usageHint": "caption"}}}, {"id": "mh-subtitle", "component": {"Text": {"text": {"literalString": "Real-time business intelligence and predictive analytics across 47 data sources"}, "usageHint": "body"}}}, {"id": "mh-breadcrumb", "component": {"Row": {"gap": 1, "children": {"explicitList": ["bc1", "bc2", "bc3"]}}}}, {"id": "bc1", "component": {"Text": {"text": {"literalString": "Home"}, "usageHint": "caption"}}}, {"id": "bc2", "component": {"Text": {"text": {"literalString": ">"}, "usageHint": "caption"}}}, {"id": "bc3", "component": {"Text": {"text": {"literalString": "Global Dashboard"}, "usageHint": "caption"}}}]}}\n',
+    '{"beginRendering": {"surfaceId": "main-header", "root": "mh-root"}}\n',
     "---a2ui_JSON---\n",
 
     // TEXT SECTION 2
-    "✓ Dashboard initialized successfully\n",
-    "Loading system status overview...\n\n",
+    "✓ Platform initialized successfully\n",
+    "✓ Authentication verified - User: admin@enterprise.com\n",
+    "✓ Permissions loaded: Full Access (Super Admin)\n",
+    "Loading real-time KPI overview...\n\n",
 
-    // JSON SECTION 2 - SYSTEM STATUS OVERVIEW
+    // JSON SECTION 2 - COMPREHENSIVE KPI DASHBOARD
     "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "status", "components": [{"id": "st-root", "component": {"Card": {"child": "st-main"}}}, {"id": "st-main", "component": {"Column": {"children": {"explicitList": ["st-header", "st-metrics"]}}}}, {"id": "st-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["st-icon", "st-title"]}}}}, {"id": "st-icon", "component": {"Icon": {"name": "dashboard"}}}, {"id": "st-title", "component": {"Text": {"text": {"literalString": "System Status"}, "usageHint": "h3"}}}, {"id": "st-metrics", "component": {"Row": {"children": {"explicitList": ["st-m1", "st-m2", "st-m3", "st-m4"]}}}}, {"id": "st-m1", "component": {"Metric": {"label": "CPU Usage", "value": {"path": "/cpu"}, "trend": "up"}}}, {"id": "st-m2", "component": {"Metric": {"label": "Memory", "value": {"path": "/memory"}, "trend": "neutral"}}}, {"id": "st-m3", "component": {"Metric": {"label": "Network", "value": {"path": "/network"}, "trend": "up"}}}, {"id": "st-m4", "component": {"Metric": {"label": "Storage", "value": {"path": "/storage"}, "trend": "neutral"}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "status", "contents": [{"key": "cpu", "valueString": "42%"}, {"key": "memory", "valueString": "8.2 GB"}, {"key": "network", "valueString": "125 Mbps"}, {"key": "storage", "valueString": "67%"}]}}\n',
-    '{"beginRendering": {"surfaceId": "status", "root": "st-root"}}\n',
+    '{"surfaceUpdate": {"surfaceId": "kpi-overview", "components": [{"id": "kpi-root", "component": {"Card": {"child": "kpi-main"}}}, {"id": "kpi-main", "component": {"Column": {"gap": 3, "children": {"explicitList": ["kpi-header", "kpi-row1", "kpi-row2", "kpi-divider", "kpi-footer"]}}}}, {"id": "kpi-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["kpi-icon", "kpi-title", "kpi-refresh"]}}}}, {"id": "kpi-icon", "component": {"Icon": {"name": "trending_up"}}}, {"id": "kpi-title", "component": {"Text": {"text": {"literalString": "Key Performance Indicators"}, "usageHint": "h2"}}}, {"id": "kpi-refresh", "component": {"Button": {"child": "kpi-refresh-txt", "action": {"name": "refresh_kpi"}}}}, {"id": "kpi-refresh-txt", "component": {"Text": {"text": {"literalString": "Refresh"}}}}, {"id": "kpi-row1", "component": {"Row": {"gap": 2, "children": {"explicitList": ["kpi-m1", "kpi-m2", "kpi-m3", "kpi-m4", "kpi-m5"]}}}}, {"id": "kpi-m1", "component": {"Metric": {"label": "Total Revenue", "value": {"path": "/kpi/revenue"}, "trend": "up"}}}, {"id": "kpi-m2", "component": {"Metric": {"label": "Active Users", "value": {"path": "/kpi/users"}, "trend": "up"}}}, {"id": "kpi-m3", "component": {"Metric": {"label": "Conversion Rate", "value": {"path": "/kpi/conversion"}, "trend": "neutral"}}}, {"id": "kpi-m4", "component": {"Metric": {"label": "Avg Response Time", "value": {"path": "/kpi/response"}, "trend": "down"}}}, {"id": "kpi-m5", "component": {"Metric": {"label": "Error Rate", "value": {"path": "/kpi/errors"}, "trend": "down"}}}, {"id": "kpi-row2", "component": {"Row": {"gap": 2, "children": {"explicitList": ["kpi-m6", "kpi-m7", "kpi-m8", "kpi-m9", "kpi-m10"]}}}}, {"id": "kpi-m6", "component": {"Metric": {"label": "API Calls/min", "value": {"path": "/kpi/api"}, "trend": "up"}}}, {"id": "kpi-m7", "component": {"Metric": {"label": "Database Load", "value": {"path": "/kpi/db"}, "trend": "neutral"}}}, {"id": "kpi-m8", "component": {"Metric": {"label": "Cache Hit Rate", "value": {"path": "/kpi/cache"}, "trend": "up"}}}, {"id": "kpi-m9", "component": {"Metric": {"label": "CDN Bandwidth", "value": {"path": "/kpi/cdn"}, "trend": "up"}}}, {"id": "kpi-m10", "component": {"Metric": {"label": "Queue Depth", "value": {"path": "/kpi/queue"}, "trend": "neutral"}}}, {"id": "kpi-divider", "component": {"Text": {"text": {"literalString": "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"}, "usageHint": "caption"}}}, {"id": "kpi-footer", "component": {"Text": {"text": {"path": "/kpi/timestamp"}, "usageHint": "caption"}}}]}}\n',
+    '{"dataModelUpdate": {"surfaceId": "kpi-overview", "contents": [{"key": "kpi", "valueMap": [{"key": "revenue", "valueString": "$2.4M"}, {"key": "users", "valueString": "127,543"}, {"key": "conversion", "valueString": "3.42%"}, {"key": "response", "valueString": "142ms"}, {"key": "errors", "valueString": "0.03%"}, {"key": "api", "valueString": "45,231"}, {"key": "db", "valueString": "67%"}, {"key": "cache", "valueString": "94.2%"}, {"key": "cdn", "valueString": "1.2 TB/h"}, {"key": "queue", "valueString": "234"}, {"key": "timestamp", "valueString": "Last updated: 2026-02-05 14:32:18 UTC"}]}]}}\n',
+    '{"beginRendering": {"surfaceId": "kpi-overview", "root": "kpi-root"}}\n',
     "---a2ui_JSON---\n",
 
     // TEXT SECTION 3
-    "✓ System resources nominal\n",
-    "Initializing telemetry and propulsion monitoring...\n\n",
+    "✓ KPI metrics loaded successfully\n",
+    "✓ Real-time data streaming active\n",
+    "Initializing regional performance breakdown...\n\n",
 
-    // JSON SECTION 3 - TELEMETRY & PROPULSION
+    // JSON SECTION 3 - REGIONAL PERFORMANCE WITH NESTED DATA
     "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "telemetry", "components": [{"id": "t-root", "component": {"Card": {"child": "t-col"}}}, {"id": "t-col", "component": {"Column": {"children": {"explicitList": ["t-head", "t-metrics"]}}}}, {"id": "t-head", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["t-icon", "t-txt"]}}}}, {"id": "t-icon", "component": {"Icon": {"name": "speed"}}}, {"id": "t-txt", "component": {"Text": {"text": {"literalString": "Velocity & Altitude"}, "usageHint": "h4"}}}, {"id": "t-metrics", "component": {"Row": {"children": {"explicitList": ["vel", "alt"]}}}}, {"id": "vel", "component": {"Metric": {"label": "Speed", "value": {"path": "/speed"}, "trend": "up"}}}, {"id": "alt", "component": {"Metric": {"label": "Altitude", "value": {"path": "/alt"}, "trend": "up"}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "telemetry", "contents": [{"key": "speed", "valueString": "24,500 km/h"}, {"key": "alt", "valueString": "180 km"}]}}\n',
-    '{"beginRendering": {"surfaceId": "telemetry", "root": "t-root"}}\n',
-    '{"surfaceUpdate": {"surfaceId": "fuel", "components": [{"id": "f-root", "component": {"Card": {"child": "f-col"}}}, {"id": "f-col", "component": {"Column": {"children": {"explicitList": ["f-head", "f-desc", "tank1", "tank2"]}}}}, {"id": "f-head", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["f-icon", "f-title"]}}}}, {"id": "f-icon", "component": {"Icon": {"name": "local_gas_station"}}}, {"id": "f-title", "component": {"Text": {"text": {"literalString": "Propellant Levels"}, "usageHint": "h4"}}}, {"id": "f-desc", "component": {"Text": {"text": {"literalString": "Real-time fuel tank monitoring"}, "usageHint": "caption"}}}, {"id": "tank1", "component": {"ProgressBar": {"value": {"path": "/lox"}}}}, {"id": "tank2", "component": {"ProgressBar": {"value": {"path": "/ch4"}}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "fuel", "contents": [{"key": "lox", "valueInt": 85}, {"key": "ch4", "valueInt": 92}]}}\n',
-    '{"beginRendering": {"surfaceId": "fuel", "root": "f-root"}}\n',
+    '{"surfaceUpdate": {"surfaceId": "regional", "components": [{"id": "reg-root", "component": {"Card": {"child": "reg-main"}}}, {"id": "reg-main", "component": {"Column": {"gap": 2, "children": {"explicitList": ["reg-header", "reg-desc", "reg-chart", "reg-metrics"]}}}}, {"id": "reg-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["reg-icon", "reg-title"]}}}}, {"id": "reg-icon", "component": {"Icon": {"name": "public"}}}, {"id": "reg-title", "component": {"Text": {"text": {"literalString": "Global Regional Performance"}, "usageHint": "h3"}}}, {"id": "reg-desc", "component": {"Text": {"text": {"literalString": "Revenue distribution across 6 continents and 42 countries"}, "usageHint": "body"}}}, {"id": "reg-chart", "component": {"Chart": {"type": "bar", "dataBinding": "/regional/chart"}}}, {"id": "reg-metrics", "component": {"Row": {"gap": 2, "children": {"explicitList": ["reg-m1", "reg-m2", "reg-m3", "reg-m4", "reg-m5", "reg-m6"]}}}}, {"id": "reg-m1", "component": {"Metric": {"label": "North America", "value": {"path": "/regional/na"}, "trend": "up"}}}, {"id": "reg-m2", "component": {"Metric": {"label": "Europe", "value": {"path": "/regional/eu"}, "trend": "up"}}}, {"id": "reg-m3", "component": {"Metric": {"label": "Asia Pacific", "value": {"path": "/regional/ap"}, "trend": "up"}}}, {"id": "reg-m4", "component": {"Metric": {"label": "Latin America", "value": {"path": "/regional/la"}, "trend": "neutral"}}}, {"id": "reg-m5", "component": {"Metric": {"label": "Middle East", "value": {"path": "/regional/me"}, "trend": "up"}}}, {"id": "reg-m6", "component": {"Metric": {"label": "Africa", "value": {"path": "/regional/af"}, "trend": "neutral"}}}]}}\n',
+    '{"dataModelUpdate": {"surfaceId": "regional", "contents": [{"key": "regional", "valueMap": [{"key": "chart", "valueList": [{"valueMap": [{"key": "val", "valueInt": 850}]}, {"valueMap": [{"key": "val", "valueInt": 720}]}, {"valueMap": [{"key": "val", "valueInt": 640}]}, {"valueMap": [{"key": "val", "valueInt": 380}]}, {"valueMap": [{"key": "val", "valueInt": 290}]}, {"valueMap": [{"key": "val", "valueInt": 180}]}]}, {"key": "na", "valueString": "$850K"}, {"key": "eu", "valueString": "$720K"}, {"key": "ap", "valueString": "$640K"}, {"key": "la", "valueString": "$380K"}, {"key": "me", "valueString": "$290K"}, {"key": "af", "valueString": "$180K"}]}]}}\n',
+    '{"beginRendering": {"surfaceId": "regional", "root": "reg-root"}}\n',
     "---a2ui_JSON---\n",
 
     // TEXT SECTION 4
-    "✓ Propellant levels optimal - LOX: 85%, CH4: 92%\n",
-    "Loading navigation and crew monitoring...\n\n",
+    "✓ Regional data synchronized\n",
+    "✓ Geographic distribution calculated\n",
+    "Loading customer segmentation analysis...\n\n",
 
-    // JSON SECTION 4 - NAVIGATION & CREW VITALS
+    // JSON SECTION 4 - CUSTOMER SEGMENTATION WITH COMPLEX TABLE
     "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "nav", "components": [{"id": "n-root", "component": {"Card": {"child": "n-col"}}}, {"id": "n-col", "component": {"Column": {"children": {"explicitList": ["n-head", "n-chart"]}}}}, {"id": "n-head", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["n-icon", "n-txt"]}}}}, {"id": "n-icon", "component": {"Icon": {"name": "public"}}}, {"id": "n-txt", "component": {"Text": {"text": {"literalString": "Orbital Trajectory"}, "usageHint": "h4"}}}, {"id": "n-chart", "component": {"Chart": {"type": "bar", "dataBinding": "/path"}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "nav", "contents": [{"key": "path", "valueList": [{"valueMap": [{"key": "val", "valueInt": 20}]}, {"valueMap": [{"key": "val", "valueInt": 40}]}, {"valueMap": [{"key": "val", "valueInt": 60}]}, {"valueMap": [{"key": "val", "valueInt": 80}]}]}]}}\n',
-    '{"beginRendering": {"surfaceId": "nav", "root": "n-root"}}\n',
-    '{"surfaceUpdate": {"surfaceId": "crew", "components": [{"id": "c-root", "component": {"Card": {"child": "c-col"}}}, {"id": "c-col", "component": {"Column": {"children": {"explicitList": ["c-head", "c-stat"]}}}}, {"id": "c-head", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["c-icon", "c-txt"]}}}}, {"id": "c-icon", "component": {"Icon": {"name": "favorite"}}}, {"id": "c-txt", "component": {"Text": {"text": {"literalString": "Crew Vitals"}, "usageHint": "h4"}}}, {"id": "c-stat", "component": {"Metric": {"label": "Avg Heart Rate", "value": {"path": "/bpm"}, "trend": "neutral"}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "crew", "contents": [{"key": "bpm", "valueString": "72 BPM"}]}}\n',
-    '{"beginRendering": {"surfaceId": "crew", "root": "c-root"}}\n',
+    '{"surfaceUpdate": {"surfaceId": "customer-seg", "components": [{"id": "cs-root", "component": {"Card": {"child": "cs-main"}}}, {"id": "cs-main", "component": {"Column": {"gap": 2, "children": {"explicitList": ["cs-header", "cs-desc", "cs-table-header", "cs-row1", "cs-row2", "cs-row3", "cs-row4", "cs-row5", "cs-row6", "cs-footer"]}}}}, {"id": "cs-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["cs-icon", "cs-title"]}}}}, {"id": "cs-icon", "component": {"Icon": {"name": "people"}}}, {"id": "cs-title", "component": {"Text": {"text": {"literalString": "Customer Segmentation Analysis"}, "usageHint": "h2"}}}, {"id": "cs-desc", "component": {"Text": {"text": {"literalString": "Behavioral clustering across 127,543 active users with ML-powered insights"}, "usageHint": "body"}}}, {"id": "cs-table-header", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-700", "backgroundColor": "zinc-800", "textColor": "zinc-100", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["th-seg", "th-users", "th-rev", "th-ltv", "th-churn"]}}}}, {"id": "th-seg", "component": {"Text": {"text": {"literalString": "SEGMENT"}, "usageHint": "caption"}}}, {"id": "th-users", "component": {"Text": {"text": {"literalString": "USERS"}, "usageHint": "caption"}}}, {"id": "th-rev", "component": {"Text": {"text": {"literalString": "REVENUE"}, "usageHint": "caption"}}}, {"id": "th-ltv", "component": {"Text": {"text": {"literalString": "AVG LTV"}, "usageHint": "caption"}}}, {"id": "th-churn", "component": {"Text": {"text": {"literalString": "CHURN"}, "usageHint": "caption"}}}, {"id": "cs-row1", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "emerald-900", "textColor": "white", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r1-seg", "r1-users", "r1-rev", "r1-ltv", "r1-churn"]}}}}, {"id": "r1-seg", "component": {"Text": {"text": {"path": "/segments/0/name"}}}}, {"id": "r1-users", "component": {"Text": {"text": {"path": "/segments/0/users"}}}}, {"id": "r1-rev", "component": {"Text": {"text": {"path": "/segments/0/revenue"}}}}, {"id": "r1-ltv", "component": {"Text": {"text": {"path": "/segments/0/ltv"}}}}, {"id": "r1-churn", "component": {"Text": {"text": {"path": "/segments/0/churn"}}}}, {"id": "cs-row2", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "blue-900", "textColor": "white", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r2-seg", "r2-users", "r2-rev", "r2-ltv", "r2-churn"]}}}}, {"id": "r2-seg", "component": {"Text": {"text": {"path": "/segments/1/name"}}}}, {"id": "r2-users", "component": {"Text": {"text": {"path": "/segments/1/users"}}}}, {"id": "r2-rev", "component": {"Text": {"text": {"path": "/segments/1/revenue"}}}}, {"id": "r2-ltv", "component": {"Text": {"text": {"path": "/segments/1/ltv"}}}}, {"id": "r2-churn", "component": {"Text": {"text": {"path": "/segments/1/churn"}}}}, {"id": "cs-row3", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "purple-900", "textColor": "white", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r3-seg", "r3-users", "r3-rev", "r3-ltv", "r3-churn"]}}}}, {"id": "r3-seg", "component": {"Text": {"text": {"path": "/segments/2/name"}}}}, {"id": "r3-users", "component": {"Text": {"text": {"path": "/segments/2/users"}}}}, {"id": "r3-rev", "component": {"Text": {"text": {"path": "/segments/2/revenue"}}}}, {"id": "r3-ltv", "component": {"Text": {"text": {"path": "/segments/2/ltv"}}}}, {"id": "r3-churn", "component": {"Text": {"text": {"path": "/segments/2/churn"}}}}, {"id": "cs-row4", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "amber-900", "textColor": "white", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r4-seg", "r4-users", "r4-rev", "r4-ltv", "r4-churn"]}}}}, {"id": "r4-seg", "component": {"Text": {"text": {"path": "/segments/3/name"}}}}, {"id": "r4-users", "component": {"Text": {"text": {"path": "/segments/3/users"}}}}, {"id": "r4-rev", "component": {"Text": {"text": {"path": "/segments/3/revenue"}}}}, {"id": "r4-ltv", "component": {"Text": {"text": {"path": "/segments/3/ltv"}}}}, {"id": "r4-churn", "component": {"Text": {"text": {"path": "/segments/3/churn"}}}}, {"id": "cs-row5", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "rose-900", "textColor": "white", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r5-seg", "r5-users", "r5-rev", "r5-ltv", "r5-churn"]}}}}, {"id": "r5-seg", "component": {"Text": {"text": {"path": "/segments/4/name"}}}}, {"id": "r5-users", "component": {"Text": {"text": {"path": "/segments/4/users"}}}}, {"id": "r5-rev", "component": {"Text": {"text": {"path": "/segments/4/revenue"}}}}, {"id": "r5-ltv", "component": {"Text": {"text": {"path": "/segments/4/ltv"}}}}, {"id": "r5-churn", "component": {"Text": {"text": {"path": "/segments/4/churn"}}}}, {"id": "cs-row6", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r6-seg", "r6-users", "r6-rev", "r6-ltv", "r6-churn"]}}}}, {"id": "r6-seg", "component": {"Text": {"text": {"path": "/segments/5/name"}}}}, {"id": "r6-users", "component": {"Text": {"text": {"path": "/segments/5/users"}}}}, {"id": "r6-rev", "component": {"Text": {"text": {"path": "/segments/5/revenue"}}}}, {"id": "r6-ltv", "component": {"Text": {"text": {"path": "/segments/5/ltv"}}}}, {"id": "r6-churn", "component": {"Text": {"text": {"path": "/segments/5/churn"}}}}, {"id": "cs-footer", "component": {"Text": {"text": {"literalString": "ML Model: Random Forest Classifier | Accuracy: 94.2% | Last trained: 2026-02-04"}, "usageHint": "caption"}}}]}}\n',
+    '{"dataModelUpdate": {"surfaceId": "customer-seg", "contents": [{"key": "segments", "valueList": [{"valueMap": [{"key": "name", "valueString": "💎 Enterprise Champions"}, {"key": "users", "valueString": "2,847"}, {"key": "revenue", "valueString": "$1.2M"}, {"key": "ltv", "valueString": "$4,250"}, {"key": "churn", "valueString": "1.2%"}]}, {"valueMap": [{"key": "name", "valueString": "🚀 Growth Accelerators"}, {"key": "users", "valueString": "8,234"}, {"key": "revenue", "valueString": "$680K"}, {"key": "ltv", "valueString": "$825"}, {"key": "churn", "valueString": "3.5%"}]}, {"valueMap": [{"key": "name", "valueString": "⭐ Loyal Regulars"}, {"key": "users", "valueString": "24,567"}, {"key": "revenue", "valueString": "$420K"}, {"key": "ltv", "valueString": "$170"}, {"key": "churn", "valueString": "5.8%"}]}, {"valueMap": [{"key": "name", "valueString": "🌱 New Explorers"}, {"key": "users", "valueString": "45,123"}, {"key": "revenue", "valueString": "$95K"}, {"key": "ltv", "valueString": "$21"}, {"key": "churn", "valueString": "12.4%"}]}, {"valueMap": [{"key": "name", "valueString": "⚠️ At-Risk Users"}, {"key": "users", "valueString": "18,942"}, {"key": "revenue", "valueString": "$28K"}, {"key": "ltv", "valueString": "$15"}, {"key": "churn", "valueString": "28.7%"}]}, {"valueMap": [{"key": "name", "valueString": "💤 Dormant Accounts"}, {"key": "users", "valueString": "27,830"}, {"key": "revenue", "valueString": "$2K"}, {"key": "ltv", "valueString": "$7"}, {"key": "churn", "valueString": "67.3%"}]}]}]}}\n',
+    '{"beginRendering": {"surfaceId": "customer-seg", "root": "cs-root"}}\n',
     "---a2ui_JSON---\n",
 
     // TEXT SECTION 5
-    "✓ Crew vitals stable - Average heart rate: 72 BPM\n",
-    "Loading mission timeline...\n\n",
+    "✓ Customer segmentation complete\n",
+    "✓ ML model predictions generated\n",
+    "Loading product performance analytics...\n\n",
 
-    // JSON SECTION 5 - MISSION TIMELINE TABLE
+    // JSON SECTION 5 - PRODUCT PERFORMANCE WITH CHARTS
     "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "table", "components": [{"id": "tb-root", "component": {"Card": {"child": "tb-main"}}}, {"id": "tb-main", "component": {"Column": {"gap": 0, "children": {"explicitList": ["tb-title", "tb-header", "tb-row1", "tb-row2", "tb-row3", "tb-row4", "tb-row5"]}}}}, {"id": "tb-title", "component": {"Text": {"text": {"literalString": "Mission Timeline"}, "usageHint": "h2"}}}, {"id": "tb-header", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-700", "backgroundColor": "zinc-800", "textColor": "zinc-100", "columnConfig": [{"width": "120px", "align": "left"}, {"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["th-time", "th-event", "th-status"]}}}}, {"id": "th-time", "component": {"Text": {"text": {"literalString": "TIMELINE"}, "usageHint": "caption"}}}, {"id": "th-event", "component": {"Text": {"text": {"literalString": "EVENT"}, "usageHint": "caption"}}}, {"id": "th-status", "component": {"Text": {"text": {"literalString": "STATUS"}, "usageHint": "caption"}}}, {"id": "tb-row1", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "green-600", "textColor": "white", "columnConfig": [{"width": "120px", "align": "left"}, {"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r1-time", "r1-event", "r1-status"]}}}}, {"id": "r1-time", "component": {"Text": {"text": {"path": "/timeline/0/time"}}}}, {"id": "r1-event", "component": {"Text": {"text": {"path": "/timeline/0/event"}}}}, {"id": "r1-status", "component": {"Text": {"text": {"path": "/timeline/0/status"}}}}, {"id": "tb-row2", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "green-600", "textColor": "white", "columnConfig": [{"width": "120px", "align": "left"}, {"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r2-time", "r2-event", "r2-status"]}}}}, {"id": "r2-time", "component": {"Text": {"text": {"path": "/timeline/1/time"}}}}, {"id": "r2-event", "component": {"Text": {"text": {"path": "/timeline/1/event"}}}}, {"id": "r2-status", "component": {"Text": {"text": {"path": "/timeline/1/status"}}}}, {"id": "tb-row3", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "blue-600", "textColor": "white", "columnConfig": [{"width": "120px", "align": "left"}, {"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r3-time", "r3-event", "r3-status"]}}}}, {"id": "r3-time", "component": {"Text": {"text": {"path": "/timeline/2/time"}}}}, {"id": "r3-event", "component": {"Text": {"text": {"path": "/timeline/2/event"}}}}, {"id": "r3-status", "component": {"Text": {"text": {"path": "/timeline/2/status"}}}}, {"id": "tb-row4", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "columnConfig": [{"width": "120px", "align": "left"}, {"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r4-time", "r4-event", "r4-status"]}}}}, {"id": "r4-time", "component": {"Text": {"text": {"path": "/timeline/3/time"}}}}, {"id": "r4-event", "component": {"Text": {"text": {"path": "/timeline/3/event"}}}}, {"id": "r4-status", "component": {"Text": {"text": {"path": "/timeline/3/status"}}}}, {"id": "tb-row5", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "columnConfig": [{"width": "120px", "align": "left"}, {"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r5-time", "r5-event", "r5-status"]}}}}, {"id": "r5-time", "component": {"Text": {"text": {"path": "/timeline/4/time"}}}}, {"id": "r5-event", "component": {"Text": {"text": {"path": "/timeline/4/event"}}}}, {"id": "r5-status", "component": {"Text": {"text": {"path": "/timeline/4/status"}}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "table", "contents": [{"key": "timeline", "valueList": [{"valueMap": [{"key": "time", "valueString": "T+00:00"}, {"key": "event", "valueString": "Liftoff"}, {"key": "status", "valueString": "✓ Complete"}]}, {"valueMap": [{"key": "time", "valueString": "T+02:30"}, {"key": "event", "valueString": "Stage Separation"}, {"key": "status", "valueString": "✓ Complete"}]}, {"valueMap": [{"key": "time", "valueString": "T+08:45"}, {"key": "event", "valueString": "Orbit Insertion"}, {"key": "status", "valueString": "⏳ In Progress"}]}, {"valueMap": [{"key": "time", "valueString": "T+12:15"}, {"key": "event", "valueString": "Solar Panel Deploy"}, {"key": "status", "valueString": "⏱️ Scheduled"}]}, {"valueMap": [{"key": "time", "valueString": "T+15:30"}, {"key": "event", "valueString": "Comm Link Test"}, {"key": "status", "valueString": "⏱️ Scheduled"}]}]}]}}\n',
-    '{"beginRendering": {"surfaceId": "table", "root": "tb-root"}}\n',
+    '{"surfaceUpdate": {"surfaceId": "products", "components": [{"id": "prod-root", "component": {"Card": {"child": "prod-main"}}}, {"id": "prod-main", "component": {"Column": {"gap": 3, "children": {"explicitList": ["prod-header", "prod-desc", "prod-chart", "prod-metrics", "prod-progress"]}}}}, {"id": "prod-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["prod-icon", "prod-title"]}}}}, {"id": "prod-icon", "component": {"Icon": {"name": "inventory"}}}, {"id": "prod-title", "component": {"Text": {"text": {"literalString": "Product Performance Dashboard"}, "usageHint": "h2"}}}, {"id": "prod-desc", "component": {"Text": {"text": {"literalString": "Sales velocity and inventory metrics across 12 product lines"}, "usageHint": "body"}}}, {"id": "prod-chart", "component": {"Chart": {"type": "bar", "dataBinding": "/products/sales"}}}, {"id": "prod-metrics", "component": {"Row": {"gap": 2, "children": {"explicitList": ["prod-m1", "prod-m2", "prod-m3", "prod-m4"]}}}}, {"id": "prod-m1", "component": {"Metric": {"label": "Total SKUs", "value": {"path": "/products/skus"}, "trend": "up"}}}, {"id": "prod-m2", "component": {"Metric": {"label": "Avg Margin", "value": {"path": "/products/margin"}, "trend": "up"}}}, {"id": "prod-m3", "component": {"Metric": {"label": "Inventory Turn", "value": {"path": "/products/turn"}, "trend": "neutral"}}}, {"id": "prod-m4", "component": {"Metric": {"label": "Out of Stock", "value": {"path": "/products/oos"}, "trend": "down"}}}, {"id": "prod-progress", "component": {"Column": {"gap": 1, "children": {"explicitList": ["prog-label1", "prog-bar1", "prog-label2", "prog-bar2", "prog-label3", "prog-bar3"]}}}}, {"id": "prog-label1", "component": {"Text": {"text": {"literalString": "Warehouse Capacity: 87%"}, "usageHint": "caption"}}}, {"id": "prog-bar1", "component": {"ProgressBar": {"value": {"path": "/products/warehouse"}}}}, {"id": "prog-label2", "component": {"Text": {"text": {"literalString": "Fulfillment Rate: 96%"}, "usageHint": "caption"}}}, {"id": "prog-bar2", "component": {"ProgressBar": {"value": {"path": "/products/fulfillment"}}}}, {"id": "prog-label3", "component": {"Text": {"text": {"literalString": "Quality Score: 98%"}, "usageHint": "caption"}}}, {"id": "prog-bar3", "component": {"ProgressBar": {"value": {"path": "/products/quality"}}}}]}}\n',
+    '{"dataModelUpdate": {"surfaceId": "products", "contents": [{"key": "products", "valueMap": [{"key": "sales", "valueList": [{"valueMap": [{"key": "val", "valueInt": 340}]}, {"valueMap": [{"key": "val", "valueInt": 280}]}, {"valueMap": [{"key": "val", "valueInt": 250}]}, {"valueMap": [{"key": "val", "valueInt": 220}]}, {"valueMap": [{"key": "val", "valueInt": 190}]}, {"valueMap": [{"key": "val", "valueInt": 160}]}]}, {"key": "skus", "valueString": "1,247"}, {"key": "margin", "valueString": "42.3%"}, {"key": "turn", "valueString": "8.2x"}, {"key": "oos", "valueString": "23"}, {"key": "warehouse", "valueInt": 87}, {"key": "fulfillment", "valueInt": 96}, {"key": "quality", "valueInt": 98}]}]}}\n',
+    '{"beginRendering": {"surfaceId": "products", "root": "prod-root"}}\n',
     "---a2ui_JSON---\n",
 
     // TEXT SECTION 6
-    "✓ Mission timeline synchronized\n",
-    "Loading communication systems...\\n\\n",
+    "✓ Product analytics loaded\n",
+    "✓ Inventory levels synchronized\n",
+    "Loading operational infrastructure monitoring...\n\n",
 
-    // JSON SECTION 6 - COMMUNICATIONS & ALERTS
+    // JSON SECTION 6 - INFRASTRUCTURE & SYSTEM HEALTH
     "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "comms", "components": [{"id": "cm-root", "component": {"Card": {"child": "cm-main"}}}, {"id": "cm-main", "component": {"Column": {"children": {"explicitList": ["cm-header", "cm-content"]}}}}, {"id": "cm-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["cm-icon", "cm-title"]}}}}, {"id": "cm-icon", "component": {"Icon": {"name": "wifi"}}}, {"id": "cm-title", "component": {"Text": {"text": {"literalString": "Communications"}, "usageHint": "h5"}}}, {"id": "cm-content", "component": {"Column": {"gap": 2, "children": {"explicitList": ["cm-status", "cm-signal"]}}}}, {"id": "cm-status", "component": {"Text": {"text": {"literalString": "Ground link established - Signal strength: Strong"}, "usageHint": "body"}}}, {"id": "cm-signal", "component": {"ProgressBar": {"value": {"path": "/signal"}}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "comms", "contents": [{"key": "signal", "valueInt": 95}]}}\n',
-    '{"beginRendering": {"surfaceId": "comms", "root": "cm-root"}}\n',
+    '{"surfaceUpdate": {"surfaceId": "infrastructure", "components": [{"id": "infra-root", "component": {"Card": {"child": "infra-main"}}}, {"id": "infra-main", "component": {"Column": {"gap": 3, "children": {"explicitList": ["infra-header", "infra-servers", "infra-services", "infra-alerts"]}}}}, {"id": "infra-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["infra-icon", "infra-title"]}}}}, {"id": "infra-icon", "component": {"Icon": {"name": "dns"}}}, {"id": "infra-title", "component": {"Text": {"text": {"literalString": "Infrastructure Health Monitor"}, "usageHint": "h2"}}}, {"id": "infra-servers", "component": {"Column": {"gap": 1, "children": {"explicitList": ["srv-title", "srv-row"]}}}}, {"id": "srv-title", "component": {"Text": {"text": {"literalString": "Server Clusters (24 nodes across 3 regions)"}, "usageHint": "h4"}}}, {"id": "srv-row", "component": {"Row": {"gap": 2, "children": {"explicitList": ["srv-m1", "srv-m2", "srv-m3", "srv-m4", "srv-m5"]}}}}, {"id": "srv-m1", "component": {"Metric": {"label": "US-East", "value": {"path": "/infra/us_east"}, "trend": "neutral"}}}, {"id": "srv-m2", "component": {"Metric": {"label": "US-West", "value": {"path": "/infra/us_west"}, "trend": "neutral"}}}, {"id": "srv-m3", "component": {"Metric": {"label": "EU-Central", "value": {"path": "/infra/eu"}, "trend": "neutral"}}}, {"id": "srv-m4", "component": {"Metric": {"label": "Asia-Pacific", "value": {"path": "/infra/ap"}, "trend": "up"}}}, {"id": "srv-m5", "component": {"Metric": {"label": "Latency Avg", "value": {"path": "/infra/latency"}, "trend": "down"}}}, {"id": "infra-services", "component": {"Column": {"gap": 1, "children": {"explicitList": ["svc-title", "svc-list"]}}}}, {"id": "svc-title", "component": {"Text": {"text": {"literalString": "Microservices Status (47 services)"}, "usageHint": "h4"}}}, {"id": "svc-list", "component": {"Column": {"gap": 1, "children": {"explicitList": ["svc1", "svc2", "svc3", "svc4", "svc5", "svc6"]}}}}, {"id": "svc1", "component": {"Row": {"gap": 1, "children": {"explicitList": ["svc1-icon", "svc1-txt"]}}}}, {"id": "svc1-icon", "component": {"Text": {"text": {"literalString": "✅"}, "usageHint": "body"}}}, {"id": "svc1-txt", "component": {"Text": {"text": {"literalString": "Authentication Service - Healthy (99.98% uptime)"}, "usageHint": "body"}}}, {"id": "svc2", "component": {"Row": {"gap": 1, "children": {"explicitList": ["svc2-icon", "svc2-txt"]}}}}, {"id": "svc2-icon", "component": {"Text": {"text": {"literalString": "✅"}, "usageHint": "body"}}}, {"id": "svc2-txt", "component": {"Text": {"text": {"literalString": "Payment Gateway - Healthy (99.95% uptime)"}, "usageHint": "body"}}}, {"id": "svc3", "component": {"Row": {"gap": 1, "children": {"explicitList": ["svc3-icon", "svc3-txt"]}}}}, {"id": "svc3-icon", "component": {"Text": {"text": {"literalString": "✅"}, "usageHint": "body"}}}, {"id": "svc3-txt", "component": {"Text": {"text": {"literalString": "Data Pipeline - Healthy (99.92% uptime)"}, "usageHint": "body"}}}, {"id": "svc4", "component": {"Row": {"gap": 1, "children": {"explicitList": ["svc4-icon", "svc4-txt"]}}}}, {"id": "svc4-icon", "component": {"Text": {"text": {"literalString": "⚠️"}, "usageHint": "body"}}}, {"id": "svc4-txt", "component": {"Text": {"text": {"literalString": "Email Service - Degraded (High latency detected)"}, "usageHint": "body"}}}, {"id": "svc5", "component": {"Row": {"gap": 1, "children": {"explicitList": ["svc5-icon", "svc5-txt"]}}}}, {"id": "svc5-icon", "component": {"Text": {"text": {"literalString": "✅"}, "usageHint": "body"}}}, {"id": "svc5-txt", "component": {"Text": {"text": {"literalString": "Search Engine - Healthy (99.99% uptime)"}, "usageHint": "body"}}}, {"id": "svc6", "component": {"Row": {"gap": 1, "children": {"explicitList": ["svc6-icon", "svc6-txt"]}}}}, {"id": "svc6-icon", "component": {"Text": {"text": {"literalString": "✅"}, "usageHint": "body"}}}, {"id": "svc6-txt", "component": {"Text": {"text": {"literalString": "Analytics Engine - Healthy (99.94% uptime)"}, "usageHint": "body"}}}, {"id": "infra-alerts", "component": {"Column": {"gap": 1, "children": {"explicitList": ["alert-title", "alert1", "alert2"]}}}}, {"id": "alert-title", "component": {"Text": {"text": {"literalString": "Recent Alerts"}, "usageHint": "h4"}}}, {"id": "alert1", "component": {"Text": {"text": {"literalString": "⚠️ WARNING: Email service latency increased to 450ms (threshold: 200ms)"}, "usageHint": "caption"}}}, {"id": "alert2", "component": {"Text": {"text": {"literalString": "ℹ️ INFO: Scheduled maintenance for US-West cluster on 2026-02-07 02:00 UTC"}, "usageHint": "caption"}}}]}}\n',
+    '{"dataModelUpdate": {"surfaceId": "infrastructure", "contents": [{"key": "infra", "valueMap": [{"key": "us_east", "valueString": "8/8 ✓"}, {"key": "us_west", "valueString": "8/8 ✓"}, {"key": "eu", "valueString": "6/6 ✓"}, {"key": "ap", "valueString": "2/2 ✓"}, {"key": "latency", "valueString": "38ms"}]}]}}\n',
+    '{"beginRendering": {"surfaceId": "infrastructure", "root": "infra-root"}}\n',
     "---a2ui_JSON---\n",
 
     // TEXT SECTION 7
-    "✓ Communications link stable\n",
-    "Loading environmental controls...\n\n",
+    "✓ Infrastructure monitoring active\n",
+    "✓ All critical services operational\n",
+    "⚠️ 1 warning detected - Email service latency elevated\n",
+    "Loading financial summary and forecasting...\n\n",
 
-    // JSON SECTION 7 - ENVIRONMENTAL CONTROLS
+    // JSON SECTION 7 - FINANCIAL SUMMARY WITH BUTTONS
     "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "env", "components": [{"id": "env-root", "component": {"Card": {"child": "env-main"}}}, {"id": "env-main", "component": {"Column": {"children": {"explicitList": ["env-header", "env-metrics"]}}}}, {"id": "env-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["env-icon", "env-title"]}}}}, {"id": "env-icon", "component": {"Icon": {"name": "thermostat"}}}, {"id": "env-title", "component": {"Text": {"text": {"literalString": "Environmental Systems"}, "usageHint": "h3"}}}, {"id": "env-metrics", "component": {"Row": {"children": {"explicitList": ["env-m1", "env-m2", "env-m3"]}}}}, {"id": "env-m1", "component": {"Metric": {"label": "Temperature", "value": {"path": "/temp"}, "trend": "neutral"}}}, {"id": "env-m2", "component": {"Metric": {"label": "Pressure", "value": {"path": "/pressure"}, "trend": "neutral"}}}, {"id": "env-m3", "component": {"Metric": {"label": "O2 Level", "value": {"path": "/oxygen"}, "trend": "up"}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "env", "contents": [{"key": "temp", "valueString": "21.5°C"}, {"key": "pressure", "valueString": "101.3 kPa"}, {"key": "oxygen", "valueString": "20.9%"}]}}\n',
-    '{"beginRendering": {"surfaceId": "env", "root": "env-root"}}\n',
-    "---a2ui_JSON---\n",
-
-    // TEXT SECTION 8
-    "✓ Environmental systems nominal\n",
-    "Loading power distribution...\n\n",
-
-    // JSON SECTION 8 - POWER DISTRIBUTION
-    "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "power", "components": [{"id": "pwr-root", "component": {"Card": {"child": "pwr-main"}}}, {"id": "pwr-main", "component": {"Column": {"children": {"explicitList": ["pwr-header", "pwr-desc", "pwr-bars"]}}}}, {"id": "pwr-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["pwr-icon", "pwr-title"]}}}}, {"id": "pwr-icon", "component": {"Icon": {"name": "battery_charging_full"}}}, {"id": "pwr-title", "component": {"Text": {"text": {"literalString": "Power Distribution"}, "usageHint": "h4"}}}, {"id": "pwr-desc", "component": {"Text": {"text": {"literalString": "Solar array and battery status"}, "usageHint": "caption"}}}, {"id": "pwr-bars", "component": {"Column": {"gap": 2, "children": {"explicitList": ["pwr-solar", "pwr-battery"]}}}}, {"id": "pwr-solar", "component": {"ProgressBar": {"value": {"path": "/solar"}}}}, {"id": "pwr-battery", "component": {"ProgressBar": {"value": {"path": "/battery"}}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "power", "contents": [{"key": "solar", "valueInt": 78}, {"key": "battery", "valueInt": 94}]}}\n',
-    '{"beginRendering": {"surfaceId": "power", "root": "pwr-root"}}\n',
+    '{"surfaceUpdate": {"surfaceId": "financial", "components": [{"id": "fin-root", "component": {"Card": {"child": "fin-main"}}}, {"id": "fin-main", "component": {"Column": {"gap": 3, "children": {"explicitList": ["fin-header", "fin-summary", "fin-chart", "fin-forecast", "fin-actions"]}}}}, {"id": "fin-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["fin-icon", "fin-title"]}}}}, {"id": "fin-icon", "component": {"Icon": {"name": "account_balance"}}}, {"id": "fin-title", "component": {"Text": {"text": {"literalString": "Financial Performance & Forecasting"}, "usageHint": "h2"}}}, {"id": "fin-summary", "component": {"Row": {"gap": 2, "children": {"explicitList": ["fin-m1", "fin-m2", "fin-m3", "fin-m4", "fin-m5"]}}}}, {"id": "fin-m1", "component": {"Metric": {"label": "MRR", "value": {"path": "/financial/mrr"}, "trend": "up"}}}, {"id": "fin-m2", "component": {"Metric": {"label": "ARR", "value": {"path": "/financial/arr"}, "trend": "up"}}}, {"id": "fin-m3", "component": {"Metric": {"label": "Gross Margin", "value": {"path": "/financial/margin"}, "trend": "up"}}}, {"id": "fin-m4", "component": {"Metric": {"label": "Burn Rate", "value": {"path": "/financial/burn"}, "trend": "down"}}}, {"id": "fin-m5", "component": {"Metric": {"label": "Runway", "value": {"path": "/financial/runway"}, "trend": "neutral"}}}, {"id": "fin-chart", "component": {"Chart": {"type": "bar", "dataBinding": "/financial/monthly"}}}, {"id": "fin-forecast", "component": {"Column": {"gap": 1, "children": {"explicitList": ["fc-title", "fc-text1", "fc-text2", "fc-text3"]}}}}, {"id": "fc-title", "component": {"Text": {"text": {"literalString": "AI-Powered Forecast (Next Quarter)"}, "usageHint": "h4"}}}, {"id": "fc-text1", "component": {"Text": {"text": {"literalString": "📈 Projected Revenue: $3.2M (+33% QoQ)"}, "usageHint": "body"}}}, {"id": "fc-text2", "component": {"Text": {"text": {"literalString": "👥 Expected New Users: 42,000 (+28% QoQ)"}, "usageHint": "body"}}}, {"id": "fc-text3", "component": {"Text": {"text": {"literalString": "💰 Predicted Churn: 4.2% (-0.8% improvement)"}, "usageHint": "body"}}}, {"id": "fin-actions", "component": {"Row": {"gap": 2, "children": {"explicitList": ["btn1", "btn2", "btn3"]}}}}, {"id": "btn1", "component": {"Button": {"child": "btn1-txt", "action": {"name": "export_report"}}}}, {"id": "btn1-txt", "component": {"Text": {"text": {"literalString": "📊 Export Report"}}}}, {"id": "btn2", "component": {"Button": {"child": "btn2-txt", "action": {"name": "view_details"}}}}, {"id": "btn2-txt", "component": {"Text": {"text": {"literalString": "🔍 View Details"}}}}, {"id": "btn3", "component": {"Button": {"child": "btn3-txt", "action": {"name": "schedule_review"}}}}, {"id": "btn3-txt", "component": {"Text": {"text": {"literalString": "📅 Schedule Review"}}}}]}}\n',
+    '{"dataModelUpdate": {"surfaceId": "financial", "contents": [{"key": "financial", "valueMap": [{"key": "mrr", "valueString": "$245K"}, {"key": "arr", "valueString": "$2.94M"}, {"key": "margin", "valueString": "68.5%"}, {"key": "burn", "valueString": "$180K/mo"}, {"key": "runway", "valueString": "18 months"}, {"key": "monthly", "valueList": [{"valueMap": [{"key": "val", "valueInt": 180}]}, {"valueMap": [{"key": "val", "valueInt": 195}]}, {"valueMap": [{"key": "val", "valueInt": 210}]}, {"valueMap": [{"key": "val", "valueInt": 225}]}, {"valueMap": [{"key": "val", "valueInt": 245}]}, {"valueMap": [{"key": "val", "valueInt": 268}]}]}]}]}}\n',
+    '{"beginRendering": {"surfaceId": "financial", "root": "fin-root"}}\n',
     "---a2ui_JSON---\n",
 
-    // TEXT SECTION 9
-    "✓ Power systems optimal - Solar: 78%, Battery: 94%\n",
-    "Loading thermal management...\n\n",
-
-    // JSON SECTION 9 - THERMAL MANAGEMENT
-    "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "thermal", "components": [{"id": "thm-root", "component": {"Card": {"child": "thm-main"}}}, {"id": "thm-main", "component": {"Column": {"children": {"explicitList": ["thm-header", "thm-chart"]}}}}, {"id": "thm-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["thm-icon", "thm-title"]}}}}, {"id": "thm-icon", "component": {"Icon": {"name": "ac_unit"}}}, {"id": "thm-title", "component": {"Text": {"text": {"literalString": "Thermal Management"}, "usageHint": "h4"}}}, {"id": "thm-chart", "component": {"Chart": {"type": "bar", "dataBinding": "/thermal"}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "thermal", "contents": [{"key": "thermal", "valueList": [{"valueMap": [{"key": "val", "valueInt": 15}]}, {"valueMap": [{"key": "val", "valueInt": 25}]}, {"valueMap": [{"key": "val", "valueInt": 35}]}, {"valueMap": [{"key": "val", "valueInt": 30}]}, {"valueMap": [{"key": "val", "valueInt": 20}]}]}]}}\n',
-    '{"beginRendering": {"surfaceId": "thermal", "root": "thm-root"}}\n',
-    "---a2ui_JSON---\n",
-
-    // TEXT SECTION 10
-    "✓ Thermal systems balanced\n",
-    "Loading guidance systems...\n\n",
-
-    // JSON SECTION 10 - GUIDANCE & CONTROL
-    "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "guidance", "components": [{"id": "gd-root", "component": {"Card": {"child": "gd-main"}}}, {"id": "gd-main", "component": {"Column": {"children": {"explicitList": ["gd-header", "gd-metrics"]}}}}, {"id": "gd-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["gd-icon", "gd-title"]}}}}, {"id": "gd-icon", "component": {"Icon": {"name": "explore"}}}, {"id": "gd-title", "component": {"Text": {"text": {"literalString": "Guidance & Control"}, "usageHint": "h3"}}}, {"id": "gd-metrics", "component": {"Row": {"children": {"explicitList": ["gd-m1", "gd-m2", "gd-m3", "gd-m4"]}}}}, {"id": "gd-m1", "component": {"Metric": {"label": "Pitch", "value": {"path": "/pitch"}, "trend": "neutral"}}}, {"id": "gd-m2", "component": {"Metric": {"label": "Yaw", "value": {"path": "/yaw"}, "trend": "neutral"}}}, {"id": "gd-m3", "component": {"Metric": {"label": "Roll", "value": {"path": "/roll"}, "trend": "neutral"}}}, {"id": "gd-m4", "component": {"Metric": {"label": "Heading", "value": {"path": "/heading"}, "trend": "up"}}}]}}\n',
-    '{"dataModelUpdate": {"surfaceId": "guidance", "contents": [{"key": "pitch", "valueString": "0.2°"}, {"key": "yaw", "valueString": "-0.1°"}, {"key": "roll", "valueString": "0.0°"}, {"key": "heading", "valueString": "045°"}]}}\n',
-    '{"beginRendering": {"surfaceId": "guidance", "root": "gd-root"}}\n',
-    "---a2ui_JSON---\n",
-
-    // TEXT SECTION 11
-    "✓ Guidance systems locked\n",
-    "Loading payload status...\n\n",
-
-    // JSON SECTION 11 - PAYLOAD STATUS
-    "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "payload", "components": [{"id": "pl-root", "component": {"Card": {"child": "pl-main"}}}, {"id": "pl-main", "component": {"Column": {"children": {"explicitList": ["pl-header", "pl-content"]}}}}, {"id": "pl-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["pl-icon", "pl-title"]}}}}, {"id": "pl-icon", "component": {"Icon": {"name": "inventory_2"}}}, {"id": "pl-title", "component": {"Text": {"text": {"literalString": "Payload Status"}, "usageHint": "h4"}}}, {"id": "pl-content", "component": {"Column": {"gap": 2, "children": {"explicitList": ["pl-text", "pl-metric"]}}}}, {"id": "pl-text", "component": {"Text": {"text": {"literalString": "Scientific instruments and cargo bay"}, "usageHint": "caption"}}}, {"id": "pl-metric", "component": {"Metric": {"label": "Bay Pressure", "value": {"path": "/bay"}, "trend": "neutral"}}}]}}\n',
+    // TEXT SECTION 8 - FINAL SUMMARY
+    "✓ Financial data synchronized\n",
+    "✓ Forecasting models updated\n",
+    "✓ All dashboards rendered successfully\n\n",
+    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
+    "🎯 ENTERPRISE ANALYTICS PLATFORM FULLY LOADED\n",
+    "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n",
+    "📊 Summary:\n",
+    "  • 7 Interactive Dashboards Rendered\n",
+    "  • 47 Data Sources Connected\n",
+    "  • 127,543 Active Users Tracked\n",
+    "  • $2.4M Total Revenue (Current Period)\n",
+    "  • 10 KPI Metrics Monitored\n",
+    "  • 6 Customer Segments Analyzed\n",
+    "  • 6 Regional Markets Tracked\n",
+    "  • 1,247 Product SKUs Managed\n",
+    "  • 24 Server Nodes Operational\n",
+    "  • 47 Microservices Running\n",
+    "  • 1 Service Alert (Email latency)\n",
+    "  • 18 Months Runway Remaining\n\n",
+    "✨ All A2UI components successfully demonstrated:\n",
+    "   ✓ Card, Column, Row layouts\n",
+    "   ✓ Text with multiple usage hints (h1, h2, h3, h4, body, caption)\n",
+    "   ✓ Icon components\n",
+    "   ✓ Metric components with trends\n",
+    "   ✓ Chart components (bar charts)\n",
+    "   ✓ ProgressBar components\n",
+    "   ✓ Button components with actions\n",
+    "   ✓ Complex table layouts with custom columns\n",
+    "   ✓ Nested data structures (valueMap, valueList)\n",
+    "   ✓ Dynamic data binding\n",
+    "   ✓ Custom styling (colors, borders, backgrounds)\n\n",
+    "🚀 System Status: OPERATIONAL\n",
+    "⏰ Last Updated: 2026-02-05 14:32:18 UTC\n",
+    "👤 Current User: admin@enterprise.com (Super Admin)\n\n",
+    "Ready for user interaction...\n",
     '{"dataModelUpdate": {"surfaceId": "payload", "contents": [{"key": "bay", "valueString": "0.01 kPa"}]}}\n',
     '{"beginRendering": {"surfaceId": "payload", "root": "pl-root"}}\n',
     "---a2ui_JSON---\n",
@@ -422,44 +422,32 @@ const runSimulation = async () => {
 </script>
 
 <template>
-  <div
-    class="h-screen bg-[#09090b] flex flex-col text-zinc-300 font-sans overflow-hidden"
-  >
+  <div class="h-screen bg-[#09090b] flex flex-col text-zinc-300 font-sans overflow-hidden">
     <div
-      class="h-14 border-b border-zinc-800 flex items-center justify-between px-6 bg-[#09090b]/80 backdrop-blur z-20"
-    >
+      class="h-14 border-b border-zinc-800 flex items-center justify-between px-6 bg-[#09090b]/80 backdrop-blur z-20">
       <div class="flex items-center gap-3">
         <div class="w-2 h-2 rounded-full bg-zinc-500"></div>
-        <span class="text-sm font-medium tracking-wide text-zinc-300"
-          >NaaviX <span class="text-zinc-600">Pro</span></span
-        >
+        <span class="text-sm font-medium tracking-wide text-zinc-300">NaaviX <span
+            class="text-zinc-600">Pro</span></span>
       </div>
-      <button
-        @click="runSimulation"
-        :disabled="isStreaming"
-        class="text-[10px] font-bold px-3 py-1.5 rounded border border-zinc-700 hover:bg-zinc-800 text-zinc-400 disabled:opacity-50 transition-all uppercase tracking-wide"
-      >
+      <button @click="runSimulation" :disabled="isStreaming"
+        class="text-[10px] font-bold px-3 py-1.5 rounded border border-zinc-700 hover:bg-zinc-800 text-zinc-400 disabled:opacity-50 transition-all uppercase tracking-wide">
         {{ isStreaming ? "Linking..." : "Initialize" }}
       </button>
     </div>
 
-    <div
-      ref="scrollRef"
-      class="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8 scroll-smooth"
-    >
+    <div ref="scrollRef" class="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8 scroll-smooth">
       <div class="max-w-5xl mx-auto min-h-full flex flex-col justify-end pb-4">
         <div class="flex justify-end mb-8">
           <div
-            class="bg-[#27272a] text-zinc-200 px-5 py-3 rounded-2xl rounded-tr-sm text-sm border border-zinc-800 max-w-md shadow-sm"
-          >
+            class="bg-[#27272a] text-zinc-200 px-5 py-3 rounded-2xl rounded-tr-sm text-sm border border-zinc-800 max-w-md shadow-sm">
             Run system diagnostics and launch protocol.
           </div>
         </div>
 
         <div class="flex gap-4 items-start animate-fade-in">
           <div
-            class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-400 shrink-0 mt-1 border border-zinc-700"
-          >
+            class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-400 shrink-0 mt-1 border border-zinc-700">
             AI
           </div>
 
@@ -467,67 +455,45 @@ const runSimulation = async () => {
             <!-- Render timeline items in order -->
             <template v-for="item in timeline" :key="item.id">
               <!-- Text item -->
-              <div
-                v-if="item.type === 'text'"
-                class="text-zinc-400 text-[15px] leading-relaxed max-w-3xl"
-                v-html="
-                  item.content
-                    .replace(
-                      /\*\*(.*?)\*\*/g,
-                      '<span class=\'text-zinc-200 font-medium\'>$1</span>'
-                    )
-                    .replace(/\n/g, '<br>')
-                "
-              ></div>
+              <div v-if="item.type === 'text'" class="text-zinc-400 text-[15px] leading-relaxed max-w-3xl" v-html="item.content
+                .replace(
+                  /\*\*(.*?)\*\*/g,
+                  '<span class=\'text-zinc-200 font-medium\'>$1</span>'
+                )
+                .replace(/\n/g, '<br>')
+                "></div>
 
               <!-- Loader item - shown while JSON is streaming -->
-              <div
-                v-else-if="item.type === 'loader'"
-                class="transition-all duration-500"
-              >
-                <div
-                  class="bg-[#18181b] border border-zinc-800 p-6 rounded-2xl animate-pulse h-48 flex flex-col gap-4"
-                >
+              <div v-else-if="item.type === 'loader'" class="transition-all duration-500">
+                <div class="bg-[#18181b] border border-zinc-800 p-6 rounded-2xl animate-pulse h-48 flex flex-col gap-4">
                   <div class="h-3 bg-zinc-800 rounded w-1/3"></div>
                   <div class="h-full bg-zinc-800/50 rounded-lg"></div>
                 </div>
               </div>
 
               <!-- Surface item - shown when JSON is complete -->
-              <div
-                v-else-if="item.type === 'surface' && surfaces[item.surfaceId]"
-                class="transition-all duration-500 animate-slide-up"
-              >
-                <A2UISurface
-                  :componentId="surfaces[item.surfaceId].root"
-                  :components="surfaces[item.surfaceId].components"
-                  :data="surfaces[item.surfaceId].data"
-                />
+              <div v-else-if="item.type === 'surface' && surfaces[item.surfaceId]"
+                class="transition-all duration-500 animate-slide-up">
+                <A2UISurface :componentId="surfaces[item.surfaceId].root"
+                  :components="surfaces[item.surfaceId].components" :data="surfaces[item.surfaceId].data" />
               </div>
             </template>
 
             <!-- Current streaming text buffer -->
             <div v-if="textBuffer" class="text-zinc-400 text-[15px]">
               {{ textBuffer
-              }}<span
-                class="inline-block w-1.5 h-4 bg-zinc-500 ml-1 align-middle animate-pulse"
-              ></span>
+              }}<span class="inline-block w-1.5 h-4 bg-zinc-500 ml-1 align-middle animate-pulse"></span>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div
-      class="h-20 bg-[#09090b] border-t border-zinc-800 flex items-center px-4 sm:px-8 shrink-0 z-30"
-    >
+    <div class="h-20 bg-[#09090b] border-t border-zinc-800 flex items-center px-4 sm:px-8 shrink-0 z-30">
       <div class="w-full max-w-5xl mx-auto relative">
-        <input
-          type="text"
-          placeholder="Enter command..."
+        <input type="text" placeholder="Enter command..."
           class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-5 py-3.5 text-sm text-zinc-300 placeholder-zinc-600 focus:outline-none focus:border-zinc-600 transition-all shadow-lg"
-          disabled
-        />
+          disabled />
       </div>
     </div>
   </div>
