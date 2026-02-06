@@ -97,6 +97,7 @@ const className = computed(() => {
   const classes = [
     "flex",
     "flex-row",
+    "w-full",
     distributionStyles[distribution] || "justify-start",
     alignmentStyles[alignment] || "items-stretch",
   ];

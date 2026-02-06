@@ -277,7 +277,7 @@ const runSimulation = async () => {
 
     // JSON SECTION 4 - CUSTOMER SEGMENTATION WITH COMPLEX TABLE
     "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "customer-seg", "components": [{"id": "cs-root", "component": {"Card": {"child": "cs-main"}}}, {"id": "cs-main", "component": {"Column": {"gap": 2, "children": {"explicitList": ["cs-header", "cs-desc", "cs-table-header", "cs-row1", "cs-row2", "cs-row3", "cs-row4", "cs-row5", "cs-row6", "cs-footer"]}}}}, {"id": "cs-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["cs-icon", "cs-title"]}}}}, {"id": "cs-icon", "component": {"Icon": {"name": "people"}}}, {"id": "cs-title", "component": {"Text": {"text": {"literalString": "Customer Segmentation Analysis"}, "usageHint": "h2"}}}, {"id": "cs-desc", "component": {"Text": {"text": {"literalString": "Behavioral clustering across 127,543 active users with ML-powered insights"}, "usageHint": "body"}}}, {"id": "cs-table-header", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-700", "backgroundColor": "zinc-800", "textColor": "zinc-100", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["th-seg", "th-users", "th-rev", "th-ltv", "th-churn"]}}}}, {"id": "th-seg", "component": {"Text": {"text": {"literalString": "SEGMENT"}, "usageHint": "caption"}}}, {"id": "th-users", "component": {"Text": {"text": {"literalString": "USERS"}, "usageHint": "caption"}}}, {"id": "th-rev", "component": {"Text": {"text": {"literalString": "REVENUE"}, "usageHint": "caption"}}}, {"id": "th-ltv", "component": {"Text": {"text": {"literalString": "AVG LTV"}, "usageHint": "caption"}}}, {"id": "th-churn", "component": {"Text": {"text": {"literalString": "CHURN"}, "usageHint": "caption"}}}, {"id": "cs-row1", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "emerald-900", "textColor": "white", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r1-seg", "r1-users", "r1-rev", "r1-ltv", "r1-churn"]}}}}, {"id": "r1-seg", "component": {"Text": {"text": {"path": "/segments/0/name"}}}}, {"id": "r1-users", "component": {"Text": {"text": {"path": "/segments/0/users"}}}}, {"id": "r1-rev", "component": {"Text": {"text": {"path": "/segments/0/revenue"}}}}, {"id": "r1-ltv", "component": {"Text": {"text": {"path": "/segments/0/ltv"}}}}, {"id": "r1-churn", "component": {"Text": {"text": {"path": "/segments/0/churn"}}}}, {"id": "cs-row2", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "blue-900", "textColor": "white", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r2-seg", "r2-users", "r2-rev", "r2-ltv", "r2-churn"]}}}}, {"id": "r2-seg", "component": {"Text": {"text": {"path": "/segments/1/name"}}}}, {"id": "r2-users", "component": {"Text": {"text": {"path": "/segments/1/users"}}}}, {"id": "r2-rev", "component": {"Text": {"text": {"path": "/segments/1/revenue"}}}}, {"id": "r2-ltv", "component": {"Text": {"text": {"path": "/segments/1/ltv"}}}}, {"id": "r2-churn", "component": {"Text": {"text": {"path": "/segments/1/churn"}}}}, {"id": "cs-row3", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "purple-900", "textColor": "white", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r3-seg", "r3-users", "r3-rev", "r3-ltv", "r3-churn"]}}}}, {"id": "r3-seg", "component": {"Text": {"text": {"path": "/segments/2/name"}}}}, {"id": "r3-users", "component": {"Text": {"text": {"path": "/segments/2/users"}}}}, {"id": "r3-rev", "component": {"Text": {"text": {"path": "/segments/2/revenue"}}}}, {"id": "r3-ltv", "component": {"Text": {"text": {"path": "/segments/2/ltv"}}}}, {"id": "r3-churn", "component": {"Text": {"text": {"path": "/segments/2/churn"}}}}, {"id": "cs-row4", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "amber-900", "textColor": "white", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r4-seg", "r4-users", "r4-rev", "r4-ltv", "r4-churn"]}}}}, {"id": "r4-seg", "component": {"Text": {"text": {"path": "/segments/3/name"}}}}, {"id": "r4-users", "component": {"Text": {"text": {"path": "/segments/3/users"}}}}, {"id": "r4-rev", "component": {"Text": {"text": {"path": "/segments/3/revenue"}}}}, {"id": "r4-ltv", "component": {"Text": {"text": {"path": "/segments/3/ltv"}}}}, {"id": "r4-churn", "component": {"Text": {"text": {"path": "/segments/3/churn"}}}}, {"id": "cs-row5", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "rose-900", "textColor": "white", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r5-seg", "r5-users", "r5-rev", "r5-ltv", "r5-churn"]}}}}, {"id": "r5-seg", "component": {"Text": {"text": {"path": "/segments/4/name"}}}}, {"id": "r5-users", "component": {"Text": {"text": {"path": "/segments/4/users"}}}}, {"id": "r5-rev", "component": {"Text": {"text": {"path": "/segments/4/revenue"}}}}, {"id": "r5-ltv", "component": {"Text": {"text": {"path": "/segments/4/ltv"}}}}, {"id": "r5-churn", "component": {"Text": {"text": {"path": "/segments/4/churn"}}}}, {"id": "cs-row6", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r6-seg", "r6-users", "r6-rev", "r6-ltv", "r6-churn"]}}}}, {"id": "r6-seg", "component": {"Text": {"text": {"path": "/segments/5/name"}}}}, {"id": "r6-users", "component": {"Text": {"text": {"path": "/segments/5/users"}}}}, {"id": "r6-rev", "component": {"Text": {"text": {"path": "/segments/5/revenue"}}}}, {"id": "r6-ltv", "component": {"Text": {"text": {"path": "/segments/5/ltv"}}}}, {"id": "r6-churn", "component": {"Text": {"text": {"path": "/segments/5/churn"}}}}, {"id": "cs-footer", "component": {"Text": {"text": {"literalString": "ML Model: Random Forest Classifier | Accuracy: 94.2% | Last trained: 2026-02-04"}, "usageHint": "caption"}}}]}}\n',
+    '{"surfaceUpdate": {"surfaceId": "customer-seg", "components": [{"id": "cs-root", "component": {"Card": {"child": "cs-main"}}}, {"id": "cs-main", "component": {"Column": {"gap": 2, "children": {"explicitList": ["cs-header", "cs-desc", "cs-table", "cs-footer"]}}}}, {"id": "cs-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["cs-icon", "cs-title"]}}}}, {"id": "cs-icon", "component": {"Icon": {"name": "people"}}}, {"id": "cs-title", "component": {"Text": {"text": {"literalString": "Customer Segmentation Analysis"}, "usageHint": "h2"}}}, {"id": "cs-desc", "component": {"Text": {"text": {"literalString": "Behavioral clustering across 127,543 active users with ML-powered insights"}, "usageHint": "body"}}}, {"id": "cs-table", "component": {"Column": {"gap": 0, "children": {"explicitList": ["cs-table-header", "cs-row1", "cs-row2", "cs-row3", "cs-row4", "cs-row5", "cs-row6"]}}}}, {"id": "cs-table-header", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-700", "backgroundColor": "zinc-800", "textColor": "zinc-100", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["th-seg", "th-users", "th-rev", "th-ltv", "th-churn"]}}}}, {"id": "th-seg", "component": {"Text": {"text": {"literalString": "SEGMENT"}, "usageHint": "caption"}}}, {"id": "th-users", "component": {"Text": {"text": {"literalString": "USERS"}, "usageHint": "caption"}}}, {"id": "th-rev", "component": {"Text": {"text": {"literalString": "REVENUE"}, "usageHint": "caption"}}}, {"id": "th-ltv", "component": {"Text": {"text": {"literalString": "AVG LTV"}, "usageHint": "caption"}}}, {"id": "th-churn", "component": {"Text": {"text": {"literalString": "CHURN"}, "usageHint": "caption"}}}, {"id": "cs-row1", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "emerald-300", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r1-seg", "r1-users", "r1-rev", "r1-ltv", "r1-churn"]}}}}, {"id": "r1-seg", "component": {"Text": {"text": {"path": "/segments/0/name"}}}}, {"id": "r1-users", "component": {"Text": {"text": {"path": "/segments/0/users"}}}}, {"id": "r1-rev", "component": {"Text": {"text": {"path": "/segments/0/revenue"}}}}, {"id": "r1-ltv", "component": {"Text": {"text": {"path": "/segments/0/ltv"}}}}, {"id": "r1-churn", "component": {"Text": {"text": {"path": "/segments/0/churn"}}}}, {"id": "cs-row2", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "blue-200", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r2-seg", "r2-users", "r2-rev", "r2-ltv", "r2-churn"]}}}}, {"id": "r2-seg", "component": {"Text": {"text": {"path": "/segments/1/name"}}}}, {"id": "r2-users", "component": {"Text": {"text": {"path": "/segments/1/users"}}}}, {"id": "r2-rev", "component": {"Text": {"text": {"path": "/segments/1/revenue"}}}}, {"id": "r2-ltv", "component": {"Text": {"text": {"path": "/segments/1/ltv"}}}}, {"id": "r2-churn", "component": {"Text": {"text": {"path": "/segments/1/churn"}}}}, {"id": "cs-row3", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "purple-200", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r3-seg", "r3-users", "r3-rev", "r3-ltv", "r3-churn"]}}}}, {"id": "r3-seg", "component": {"Text": {"text": {"path": "/segments/2/name"}}}}, {"id": "r3-users", "component": {"Text": {"text": {"path": "/segments/2/users"}}}}, {"id": "r3-rev", "component": {"Text": {"text": {"path": "/segments/2/revenue"}}}}, {"id": "r3-ltv", "component": {"Text": {"text": {"path": "/segments/2/ltv"}}}}, {"id": "r3-churn", "component": {"Text": {"text": {"path": "/segments/2/churn"}}}}, {"id": "cs-row4", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "amber-900", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r4-seg", "r4-users", "r4-rev", "r4-ltv", "r4-churn"]}}}}, {"id": "r4-seg", "component": {"Text": {"text": {"path": "/segments/3/name"}}}}, {"id": "r4-users", "component": {"Text": {"text": {"path": "/segments/3/users"}}}}, {"id": "r4-rev", "component": {"Text": {"text": {"path": "/segments/3/revenue"}}}}, {"id": "r4-ltv", "component": {"Text": {"text": {"path": "/segments/3/ltv"}}}}, {"id": "r4-churn", "component": {"Text": {"text": {"path": "/segments/3/churn"}}}}, {"id": "cs-row5", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "backgroundColor": "rose-900", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r5-seg", "r5-users", "r5-rev", "r5-ltv", "r5-churn"]}}}}, {"id": "r5-seg", "component": {"Text": {"text": {"path": "/segments/4/name"}}}}, {"id": "r5-users", "component": {"Text": {"text": {"path": "/segments/4/users"}}}}, {"id": "r5-rev", "component": {"Text": {"text": {"path": "/segments/4/revenue"}}}}, {"id": "r5-ltv", "component": {"Text": {"text": {"path": "/segments/4/ltv"}}}}, {"id": "r5-churn", "component": {"Text": {"text": {"path": "/segments/4/churn"}}}}, {"id": "cs-row6", "component": {"Row": {"columnWidthMode": "custom", "alignment": "center", "borderStyle": "all", "borderColor": "zinc-800", "columnConfig": [{"width": "2fr", "align": "left"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}, {"width": "1fr", "align": "center"}], "children": {"explicitList": ["r6-seg", "r6-users", "r6-rev", "r6-ltv", "r6-churn"]}}}}, {"id": "r6-seg", "component": {"Text": {"text": {"path": "/segments/5/name"}}}}, {"id": "r6-users", "component": {"Text": {"text": {"path": "/segments/5/users"}}}}, {"id": "r6-rev", "component": {"Text": {"text": {"path": "/segments/5/revenue"}}}}, {"id": "r6-ltv", "component": {"Text": {"text": {"path": "/segments/5/ltv"}}}}, {"id": "r6-churn", "component": {"Text": {"text": {"path": "/segments/5/churn"}}}}, {"id": "cs-footer", "component": {"Text": {"text": {"literalString": "ML Model: Random Forest Classifier | Accuracy: 94.2% | Last trained: 2026-02-04"}, "usageHint": "caption"}}}]}}\n',
     '{"dataModelUpdate": {"surfaceId": "customer-seg", "contents": [{"key": "segments", "valueList": [{"valueMap": [{"key": "name", "valueString": "💎 Enterprise Champions"}, {"key": "users", "valueString": "2,847"}, {"key": "revenue", "valueString": "$1.2M"}, {"key": "ltv", "valueString": "$4,250"}, {"key": "churn", "valueString": "1.2%"}]}, {"valueMap": [{"key": "name", "valueString": "🚀 Growth Accelerators"}, {"key": "users", "valueString": "8,234"}, {"key": "revenue", "valueString": "$680K"}, {"key": "ltv", "valueString": "$825"}, {"key": "churn", "valueString": "3.5%"}]}, {"valueMap": [{"key": "name", "valueString": "⭐ Loyal Regulars"}, {"key": "users", "valueString": "24,567"}, {"key": "revenue", "valueString": "$420K"}, {"key": "ltv", "valueString": "$170"}, {"key": "churn", "valueString": "5.8%"}]}, {"valueMap": [{"key": "name", "valueString": "🌱 New Explorers"}, {"key": "users", "valueString": "45,123"}, {"key": "revenue", "valueString": "$95K"}, {"key": "ltv", "valueString": "$21"}, {"key": "churn", "valueString": "12.4%"}]}, {"valueMap": [{"key": "name", "valueString": "⚠️ At-Risk Users"}, {"key": "users", "valueString": "18,942"}, {"key": "revenue", "valueString": "$28K"}, {"key": "ltv", "valueString": "$15"}, {"key": "churn", "valueString": "28.7%"}]}, {"valueMap": [{"key": "name", "valueString": "💤 Dormant Accounts"}, {"key": "users", "valueString": "27,830"}, {"key": "revenue", "valueString": "$2K"}, {"key": "ltv", "valueString": "$7"}, {"key": "churn", "valueString": "67.3%"}]}]}]}}\n',
     '{"beginRendering": {"surfaceId": "customer-seg", "root": "cs-root"}}\n',
     "---a2ui_JSON---\n",
@@ -355,6 +355,7 @@ const runSimulation = async () => {
     "⏰ Last Updated: 2026-02-05 14:32:18 UTC\n",
     "👤 Current User: admin@enterprise.com (Super Admin)\n\n",
     "Ready for user interaction...\n",
+    "---a2ui_JSON---\n",
     '{"dataModelUpdate": {"surfaceId": "payload", "contents": [{"key": "bay", "valueString": "0.01 kPa"}]}}\n',
     '{"beginRendering": {"surfaceId": "payload", "root": "pl-root"}}\n',
     "---a2ui_JSON---\n",
@@ -387,8 +388,8 @@ const runSimulation = async () => {
 
     // JSON SECTION 14 - EMERGENCY PROTOCOLS
     "---a2ui_JSON---\n",
-    '{"surfaceUpdate": {"surfaceId": "emergency", "components": [{"id": "em-root", "component": {"Card": {"child": "em-main"}}}, {"id": "em-main", "component": {"Column": {"children": {"explicitList": ["em-header", "em-content"]}}}}, {"id": "em-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["em-icon", "em-title"]}}}}, {"id": "em-icon", "component": {"Icon": {"name": "emergency"}}}, {"id": "em-title", "component": {"Text": {"text": {"literalString": "Emergency Protocols"}, "usageHint": "h3"}}}, {"id": "em-content", "component": {"Column": {"gap": 2, "children": {"explicitList": ["em-status", "em-btn"]}}}}, {"id": "em-status", "component": {"Text": {"text": {"literalString": "All emergency systems armed and ready"}, "usageHint": "body"}}}, {"id": "em-btn", "component": {"Button": {"child": "em-btn-txt", "action": {"name": "abort"}}}}, {"id": "em-btn-txt", "component": {"Text": {"text": {"literalString": "ABORT MISSION"}}}}}]}}\n',
-    '{"beginRendering": {"surfaceId": "emergency", "root": "em-root"}}\n',
+    '{"surfaceUpdate": {"surfaceId": "ctrl", "components": [{"id": "ct-root", "component": {"Card": {"child": "ct-col"}}}, {"id": "ct-col", "component": {"Column": {"children": {"explicitList": ["ct-head", "ct-btn"]}}}}, {"id": "ct-head", "component": {"Text": {"text": {"literalString": "Manual Override"}, "usageHint": "caption"}}}, {"id": "ct-btn", "component": {"Button": {"child": "abt", "action": {"name": "abort"}}}}, {"id": "abt", "component": {"Text": {"text": {"literalString": "INITIATE ABORT"}}}}]}}\n',
+    '{"beginRendering": {"surfaceId": "ctrl", "root": "ct-root"}}\n',
     "---a2ui_JSON---\n",
 
     // TEXT SECTION 15
@@ -402,7 +403,25 @@ const runSimulation = async () => {
     '{"beginRendering": {"surfaceId": "diagnostics", "root": "diag-root"}}\n',
     "---a2ui_JSON---\n",
 
-    // TEXT SECTION 16 - FINAL
+    // TEXT SECTION 16
+    "✓ Diagnostics complete\n",
+    "Loading inventory management system...\n\n",
+
+    // JSON SECTION 16 - INVENTORY LIST WITH DATA BINDING
+    "---a2ui_JSON---\n",
+    '{"surfaceUpdate": {"surfaceId": "inventory", "components": [{"id": "inv-root", "component": {"Card": {"child": "inv-main"}}}, {"id": "inv-main", "component": {"Column": {"gap": 3, "children": {"explicitList": ["inv-header", "inv-desc", "inv-list"]}}}}, {"id": "inv-header", "component": {"Row": {"alignment": "center", "children": {"explicitList": ["inv-icon", "inv-title"]}}}}, {"id": "inv-icon", "component": {"Icon": {"name": "inventory"}}}, {"id": "inv-title", "component": {"Text": {"text": {"literalString": "Mission Inventory"}, "usageHint": "h2"}}}, {"id": "inv-desc", "component": {"Text": {"text": {"literalString": "Critical supplies and equipment status"}, "usageHint": "body"}}}, {"id": "inv-list", "component": {"List": {"direction": "vertical", "gap": 3, "itemTemplate": "inv-item-template", "children": {"dataBinding": "/inventory/items"}}}}, {"id": "inv-item-template", "component": {"Row": {"alignment": "center", "distribution": "spaceBetween", "children": {"explicitList": ["inv-item-left", "inv-item-status"]}}}}, {"id": "inv-item-left", "component": {"Row": {"alignment": "center", "gap": 3, "children": {"explicitList": ["inv-item-icon", "inv-item-content"]}}}}, {"id": "inv-item-icon", "component": {"Icon": {"name": {"path": "/$item/icon"}}}}, {"id": "inv-item-content", "component": {"Column": {"gap": 0, "children": {"explicitList": ["inv-item-name", "inv-item-qty"]}}}}, {"id": "inv-item-name", "component": {"Text": {"text": {"path": "/$item/name"}, "usageHint": "h4"}}}, {"id": "inv-item-qty", "component": {"Text": {"text": {"path": "/$item/quantity"}, "textColor": "zinc-500", "usageHint": "body"}}}, {"id": "inv-item-status", "component": {"Text": {"text": {"path": "/$item/status"}, "textColor": "emerald-400", "usageHint": "caption"}}}]}}\n',
+    '{"dataModelUpdate": {"surfaceId": "inventory", "contents": [{"key": "inventory", "valueMap": [{"key": "items", "valueList": [{"valueMap": [{"key": "icon", "valueString": "battery_charging_full"}, {"key": "name", "valueString": "Power Cells"}, {"key": "quantity", "valueString": "24 units"}, {"key": "status", "valueString": "OPTIMAL"}]}, {"valueMap": [{"key": "icon", "valueString": "water_drop"}, {"key": "name", "valueString": "Water Supply"}, {"key": "quantity", "valueString": "450 liters"}, {"key": "status", "valueString": "OPTIMAL"}]}, {"valueMap": [{"key": "icon", "valueString": "restaurant"}, {"key": "name", "valueString": "Food Rations"}, {"key": "quantity", "valueString": "180 days"}, {"key": "status", "valueString": "OPTIMAL"}]}, {"valueMap": [{"key": "icon", "valueString": "air"}, {"key": "name", "valueString": "Oxygen Tanks"}, {"key": "quantity", "valueString": "12 tanks"}, {"key": "status", "valueString": "OPTIMAL"}]}, {"valueMap": [{"key": "icon", "valueString": "medical_services"}, {"key": "name", "valueString": "Medical Supplies"}, {"key": "quantity", "valueString": "Full kit"}, {"key": "status", "valueString": "OPTIMAL"}]}]}]}]}}\n',
+    '{"beginRendering": {"surfaceId": "inventory", "root": "inv-root"}}\n',
+    "---a2ui_JSON---\n",
+
+    // JSON SECTION 17 - CULTURAL HIGHLIGHTS
+    "---a2ui_JSON---\n",
+    '{"surfaceUpdate": {"surfaceId": "culture", "components": [{"id": "culture-root", "component": {"Card": {"child": "culture-main"}}}, {"id": "culture-main", "component": {"Column": {"gap": 2, "children": {"explicitList": ["culture-header", "culture-list"]}}}}, {"id": "culture-header", "component": {"Text": {"text": {"literalString": "Cultural Highlights"}, "usageHint": "h2"}}}, {"id": "culture-list", "component": {"List": {"direction": "vertical", "gap": 1, "itemPadding": 2, "itemTemplate": "culture-item-template", "children": {"dataBinding": "/culture/highlights"}}}}, {"id": "culture-item-template", "component": {"Row": {"alignment": "center", "gap": 2, "children": {"explicitList": ["culture-item-icon", "culture-item-content"]}}}}, {"id": "culture-item-icon", "component": {"Icon": {"name": {"path": "/$item/icon"}}}}, {"id": "culture-item-content", "component": {"Column": {"gap": 1, "children": {"explicitList": ["culture-item-title", "culture-item-desc"]}}}}, {"id": "culture-item-title", "component": {"Text": {"text": {"path": "/$item/title"}, "usageHint": "h3"}}}, {"id": "culture-item-desc", "component": {"Text": {"text": {"path": "/$item/description"}, "textColor": "zinc-400", "usageHint": "body"}}}]}}\n',
+    '{"dataModelUpdate": {"surfaceId": "culture", "contents": [{"key": "culture", "valueMap": [{"key": "highlights", "valueList": [{"valueMap": [{"key": "icon", "valueString": "account_balance"}, {"key": "title", "valueString": "UNESCO-listed old town"}, {"key": "description", "valueString": "Austro-Hungarian architecture and cobblestone charm"}]}, {"valueMap": [{"key": "icon", "valueString": "local_cafe"}, {"key": "title", "valueString": "Cafe and chocolate culture"}, {"key": "description", "valueString": "Roasteries, chocolateries, and cozy courtyards"}]}, {"valueMap": [{"key": "icon", "valueString": "music_note"}, {"key": "title", "valueString": "Vibrant arts scene"}, {"key": "description", "valueString": "Opera house, street music, and galleries"}]}]}]}]}}\n',
+    '{"beginRendering": {"surfaceId": "culture", "root": "culture-root"}}\n',
+    "---a2ui_JSON---\n",
+
+    // TEXT SECTION 18 - FINAL
     "✓ All systems operational and verified\n",
     "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n",
     "Dashboard initialization complete. Ready for mission. 🚀\n",
@@ -415,39 +434,50 @@ const runSimulation = async () => {
     const chunk = fullStream.slice(cursor, cursor + size);
     processToken(chunk);
     cursor += size;
-    await new Promise((r) => setTimeout(r, Math.random() * 20 + 10));
   }
   isStreaming.value = false;
 };
 </script>
 
 <template>
-  <div class="h-screen bg-[#09090b] flex flex-col text-zinc-300 font-sans overflow-hidden">
+  <div
+    class="h-screen bg-[#09090b] flex flex-col text-zinc-300 font-sans overflow-hidden"
+  >
     <div
-      class="h-14 border-b border-zinc-800 flex items-center justify-between px-6 bg-[#09090b]/80 backdrop-blur z-20">
+      class="h-14 border-b border-zinc-800 flex items-center justify-between px-6 bg-[#09090b]/80 backdrop-blur z-20"
+    >
       <div class="flex items-center gap-3">
         <div class="w-2 h-2 rounded-full bg-zinc-500"></div>
-        <span class="text-sm font-medium tracking-wide text-zinc-300">NaaviX <span
-            class="text-zinc-600">Pro</span></span>
+        <span class="text-sm font-medium tracking-wide text-zinc-300"
+          >NaaviX <span class="text-zinc-600">Pro</span></span
+        >
       </div>
-      <button @click="runSimulation" :disabled="isStreaming"
-        class="text-[10px] font-bold px-3 py-1.5 rounded border border-zinc-700 hover:bg-zinc-800 text-zinc-400 disabled:opacity-50 transition-all uppercase tracking-wide">
+      <button
+        @click="runSimulation"
+        :disabled="isStreaming"
+        class="text-[10px] font-bold px-3 py-1.5 rounded border border-zinc-700 hover:bg-zinc-800 text-zinc-400 disabled:opacity-50 transition-all uppercase tracking-wide"
+      >
         {{ isStreaming ? "Linking..." : "Initialize" }}
       </button>
     </div>
 
-    <div ref="scrollRef" class="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8 scroll-smooth">
+    <div
+      ref="scrollRef"
+      class="flex-1 overflow-y-auto p-4 sm:p-8 space-y-8 scroll-smooth"
+    >
       <div class="max-w-5xl mx-auto min-h-full flex flex-col justify-end pb-4">
         <div class="flex justify-end mb-8">
           <div
-            class="bg-[#27272a] text-zinc-200 px-5 py-3 rounded-2xl rounded-tr-sm text-sm border border-zinc-800 max-w-md shadow-sm">
+            class="bg-[#27272a] text-zinc-200 px-5 py-3 rounded-2xl rounded-tr-sm text-sm border border-zinc-800 max-w-md shadow-sm"
+          >
             Run system diagnostics and launch protocol.
           </div>
         </div>
 
         <div class="flex gap-4 items-start animate-fade-in">
           <div
-            class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-400 shrink-0 mt-1 border border-zinc-700">
+            class="w-8 h-8 rounded-lg bg-zinc-800 flex items-center justify-center text-[10px] font-bold text-zinc-400 shrink-0 mt-1 border border-zinc-700"
+          >
             AI
           </div>
 
@@ -455,45 +485,67 @@ const runSimulation = async () => {
             <!-- Render timeline items in order -->
             <template v-for="item in timeline" :key="item.id">
               <!-- Text item -->
-              <div v-if="item.type === 'text'" class="text-zinc-400 text-[15px] leading-relaxed max-w-3xl" v-html="item.content
-                .replace(
-                  /\*\*(.*?)\*\*/g,
-                  '<span class=\'text-zinc-200 font-medium\'>$1</span>'
-                )
-                .replace(/\n/g, '<br>')
-                "></div>
+              <div
+                v-if="item.type === 'text'"
+                class="text-zinc-400 text-[15px] leading-relaxed max-w-3xl"
+                v-html="
+                  item.content
+                    .replace(
+                      /\*\*(.*?)\*\*/g,
+                      '<span class=\'text-zinc-200 font-medium\'>$1</span>'
+                    )
+                    .replace(/\n/g, '<br>')
+                "
+              ></div>
 
               <!-- Loader item - shown while JSON is streaming -->
-              <div v-else-if="item.type === 'loader'" class="transition-all duration-500">
-                <div class="bg-[#18181b] border border-zinc-800 p-6 rounded-2xl animate-pulse h-48 flex flex-col gap-4">
+              <div
+                v-else-if="item.type === 'loader'"
+                class="transition-all duration-500"
+              >
+                <div
+                  class="bg-[#18181b] border border-zinc-800 p-6 rounded-2xl animate-pulse h-48 flex flex-col gap-4"
+                >
                   <div class="h-3 bg-zinc-800 rounded w-1/3"></div>
                   <div class="h-full bg-zinc-800/50 rounded-lg"></div>
                 </div>
               </div>
 
               <!-- Surface item - shown when JSON is complete -->
-              <div v-else-if="item.type === 'surface' && surfaces[item.surfaceId]"
-                class="transition-all duration-500 animate-slide-up">
-                <A2UISurface :componentId="surfaces[item.surfaceId].root"
-                  :components="surfaces[item.surfaceId].components" :data="surfaces[item.surfaceId].data" />
+              <div
+                v-else-if="item.type === 'surface' && surfaces[item.surfaceId]"
+                class="transition-all duration-500 animate-slide-up"
+              >
+                <A2UISurface
+                  :componentId="surfaces[item.surfaceId].root"
+                  :components="surfaces[item.surfaceId].components"
+                  :data="surfaces[item.surfaceId].data"
+                />
               </div>
             </template>
 
             <!-- Current streaming text buffer -->
             <div v-if="textBuffer" class="text-zinc-400 text-[15px]">
               {{ textBuffer
-              }}<span class="inline-block w-1.5 h-4 bg-zinc-500 ml-1 align-middle animate-pulse"></span>
+              }}<span
+                class="inline-block w-1.5 h-4 bg-zinc-500 ml-1 align-middle animate-pulse"
+              ></span>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="h-20 bg-[#09090b] border-t border-zinc-800 flex items-center px-4 sm:px-8 shrink-0 z-30">
+    <div
+      class="h-20 bg-[#09090b] border-t border-zinc-800 flex items-center px-4 sm:px-8 shrink-0 z-30"
+    >
       <div class="w-full max-w-5xl mx-auto relative">
-        <input type="text" placeholder="Enter command..."
+        <input
+          type="text"
+          placeholder="Enter command..."
           class="w-full bg-[#18181b] border border-zinc-800 rounded-xl px-5 py-3.5 text-sm text-zinc-300 placeholder-zinc-600 focus:outline-none focus:border-zinc-600 transition-all shadow-lg"
-          disabled />
+          disabled
+        />
       </div>
     </div>
   </div>
